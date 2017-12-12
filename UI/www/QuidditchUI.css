@@ -1,0 +1,36 @@
+body{
+	background-image: url(assets/BEANSTRIKESAGAIN.png);
+	background-repeat: no-repeat;
+	background-size: cover;	
+}
+
+#timer {
+	position: absolute;
+	height: 80px;
+	width: 10%;
+	background-color: white;
+	top: -2%;
+	left: 45%;
+	text-align: center;
+	border-style: solid;
+	border-color: black;
+	border-width: 3px;
+	display: block;
+}
+
+#stop {
+	background-image: url(assets/BEANSTRIKESAGAIN.png);
+	background-size: cover;
+	height: 300px;
+	width: 300px;
+}
+
+#doom {
+	position: relative;
+}
+
+#doom img {
+	position: absolute;
+    left: 181px;
+    width: 40px;
+    top: 232px;
