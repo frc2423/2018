@@ -17,14 +17,13 @@ body{
 	border-width: 3px;
 	display: block;
 }
-
-#stop {
-	background-image: url(assets/BEANSTRIKESAGAIN.png);
-	background-size: cover;
-	height: 300px;
-	width: 300px;
+	
+#timer span {
+	position: relative;
+	font-size: 30px;
+	top: 35%;
 }
-
+	
 #doom {
 	position: relative;
 }
