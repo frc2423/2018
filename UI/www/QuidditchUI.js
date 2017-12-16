@@ -1,6 +1,6 @@
 //Timer
 
-var match_length = 5000;
+var match_length = 135000;
 var start_button_time = match_length;
 var change_time;
 showTime(start_button_time);
@@ -54,6 +54,19 @@ $('.hoop button').on('click', function() {
 	var currentTargetValue = parseInt(targetElement.text());
 	var nextTargetValue = currentTargetValue + (buttonValue > 0 ? 1 : -1);
 	if (currentTargetValue > 0 || buttonValue > 0){
+		targetElement.text(nextTargetValue);
+		score = (score+button.data("value"));
+		$(".score").text(score);
+	}
+});
+
+$('.penalty button').on('click', function() {
+	var button = $(this);
+	var targetElement = button.parent().find("span");
+	var buttonValue = button.data("value");
+	var currentTargetValue = parseInt(targetElement.text());
+	var nextTargetValue = currentTargetValue + (buttonValue < 0 ? 1 : -1);
+	if (currentTargetValue > 0 || buttonValue < 0){
 		targetElement.text(nextTargetValue);
 		score = (score+button.data("value"));
 		$(".score").text(score);
