@@ -1,6 +1,6 @@
 
 $('#start').on('click', function() {
-	NetworkTables.putValue("/SmartDashboard/controls_enabled", true);
+	//NetworkTables.putValue("/SmartDashboard/controls_enabled", true);
 	var startTime = Date.now();
 	setInterval(function() {
 		showTime(startTime);
@@ -8,7 +8,7 @@ $('#start').on('click', function() {
 });
 
 $('#stop').on('click', function() {
-	NetworkTables.putValue("/SmartDashboard/controls_enabled", false);
+	//NetworkTables.putValue("/SmartDashboard/controls_enabled", false);
 });
 
 function showTime(time) {
