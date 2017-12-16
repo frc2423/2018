@@ -32,7 +32,7 @@ class MyRobot(wpilib.IterativeRobot):
         pass
 
     def teleopPeriodic(self):
-        pass
+        self.robot_drive.arcadeDrive()
 
 
 if __name__ == "__main__":
