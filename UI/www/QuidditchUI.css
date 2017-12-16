@@ -1,7 +1,7 @@
 body{
-	background-image: url(assets/BEANSTRIKESAGAIN.png);
-	background-repeat: no-repeat;
-	background-size: cover;	
+	background-image: url(assets/kwarqslogo.png);
+
+	background-repeat: repeat;
 }
 
 #timer {
@@ -17,6 +17,7 @@ body{
 	border-width: 3px;
 	display: block;
 }
+
 	
 #timer span {
 	position: relative;
@@ -33,3 +34,7 @@ body{
     left: 181px;
     width: 40px;
     top: 232px;
+
+/*.score{
+	position: relative;
+}*/
