@@ -18,6 +18,23 @@ body{
 	display: block;
 }
 
-score{
-	position: 
+	
+#timer span {
+	position: relative;
+	font-size: 30px;
+	top: 35%;
+}
+	
+#doom {
+	position: relative;
+}
 
+#doom img {
+	position: absolute;
+    left: 181px;
+    width: 40px;
+    top: 232px;
+
+/*.score{
+	position: relative;
+}*/
