@@ -5,6 +5,8 @@
 
 import wpilib
 import ctre
+from networktables import NetworkTables
+
 
 class MyRobot(wpilib.IterativeRobot):
 
@@ -22,7 +24,9 @@ class MyRobot(wpilib.IterativeRobot):
 
         self.gyro = wpilib.ADXRS450_Gyro()
 
-        self.robot_drive = wpilib.RobotDrive(self.fl_motor, self.bl_motor, self.fake_motor, self.fake_motor)
+        self.robot_drive = wpilib.RobotDrive(self.fl_motor, self.bl_motor, self.fr_motor, self.br_motor)
+        self.table = NetworkTables.getTable('SmartDashboard')
+
 
     def autonomousInit(self):
         """This function is run once each time the robot enters autonomous mode."""
@@ -34,6 +38,12 @@ class MyRobot(wpilib.IterativeRobot):
     def teleopPeriodic(self):
         pass
 
+        if self.table.getBoolean('controls_enable', False):
+            turn_rate = self.l_joy.getY()
+            speed = self.l_joy.getX()
+            self.robot_drive.arcadeDrive(speed, turn_rate)
+        else:
+            pass
 
 if __name__ == "__main__":
     wpilib.run(MyRobot)
