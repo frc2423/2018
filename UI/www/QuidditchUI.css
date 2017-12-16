@@ -1,7 +1,7 @@
 body{
-	background-image: url(assets/BEANSTRIKESAGAIN.png);
-	background-repeat: no-repeat;
-	background-size: cover;	
+	background-image: url(assets/kwarqslogo.png);
+
+	background-repeat: repeat;
 }
 
 #timer {
@@ -18,19 +18,6 @@ body{
 	display: block;
 }
 
-#stop {
-	background-image: url(assets/BEANSTRIKESAGAIN.png);
-	background-size: cover;
-	height: 300px;
-	width: 300px;
-}
+score{
+	position: 
 
-#doom {
-	position: relative;
-}
-
-#doom img {
-	position: absolute;
-    left: 181px;
-    width: 40px;
-    top: 232px;

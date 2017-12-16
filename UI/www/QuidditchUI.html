@@ -3,19 +3,51 @@
 	<head>
 		<title>Quidditch</title>
 		<link rel="stylesheet" href="QuidditchUI.css"/>
-		<script src="/scripts/jquery-2.2.2.min.js"></script>
-		<script src="/networktables/networktables.js"></script> 
 	</head>
 
 	<body>
 		<div id="timer">
-		hello
+		
 		</div>
+	<div class="scoring">
+		<div class="score">0</div>
+		<div class="hoop close">
+			<span class="scores">0</span>
+			<span class="2xscores">0</span>
+			<label>Close Hoop</label>
+			<button data-value="10" data-target="scores">+</button>
+			<button data-value="-10" data-target="scores">-</button>
+			<button data-value="20" data-target="2xscores">2x</button>
+			<button data-value="-20" data-target="2xscores">-2x</button>
+		</div>
+		<div class="hoop">
+			<span class="scores">0</span>
+			<span class="2xscores">0</span>
+			<label>Middle Hoop</label>
+			<button data-value="20" data-target="scores">+</button>
+			<button data-value="-20" data-target="scores">-</button>
+			<button data-value="40" data-target="2xscores">2x</button>
+			<button data-value="-40" data-target="2xscores">-2x</button>
+		</div>
+		<div class="hoop">
+			<span class="scores">0</span>
+			<span class="2xscores">0</span>
+			<label>Far Hoop</label>
+			<button data-value="30" data-target="scores">+</button>
+			<button data-value="-30" data-target="scores">-</button>
+			<button data-value="60" data-target="2xscores">2x</button>
+			<button data-value="-60" data-target="2xscores">-2x</button>
+		</div>
+	</div>
 		
 		<input type="button" id="start" value="Start"/>
 		<input type="button" id="stop" value="Stop"/>
+		
+		
+	<script src="/scripts/jquery-2.2.2.min.js"></script>
+		<script src="/networktables/networktables.js"></script> 
+		<script src="QuidditchUI.js"></script>
 
 	</body>
 
-<script src="QuidditchUI.js"></script>`
 </html>
