@@ -36,7 +36,7 @@ class MyRobot(wpilib.IterativeRobot):
         pass
 
     def teleopPeriodic(self):
-        pass
+        self.robot_drive.arcadeDrive(self.r_joy)
 
         if self.table.getBoolean('controls_enabled', False):
             turn_rate = self.l_joy.getY()
