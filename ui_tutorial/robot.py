@@ -13,13 +13,10 @@ class MyRobot(wpilib.IterativeRobot):
 
     def robotInit(self):
         self.sd = NetworkTables.getTable("SmartDashboard")
-        self.sd.putNumber('number1', 1)
-        self.sd.putNumber('number2', 2)
-        self.motor = ctre.CANTalon(0)
+
 
     def teleopPeriodic(self):
-        self.motor.set(self.sd.getNumber('speed', 0))
-        print(self.sd.getNumber('speed', 0))
+        pass
 
 if __name__ == "__main__":
     wpilib.run(MyRobot)
