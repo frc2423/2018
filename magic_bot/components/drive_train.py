@@ -31,3 +31,7 @@ class DriveTrain:
 
     def getAngle(self):
         return self.gyro.getAngle()
+
+    def arcade_drive(self, turn_rate, speed):
+        self.turn_rate = turn_rate
+        self.speed = speed

@@ -17,6 +17,7 @@ class MyRobot(magicbot.MagicRobot):
         self.fr_motor = ctre.CANTalon(40)
         self.fr_motor.setInverted(True)
         self.br_motor.setInverted(True)
+        self.joy1 = wpilib.Joystick(1)
 
         self.robot_drive = wpilib.RobotDrive(self.fl_motor, self.bl_motor, self.fr_motor, self.br_motor)
         self.gyro = navx.AHRS.create_spi()
@@ -30,7 +31,6 @@ class MyRobot(magicbot.MagicRobot):
 
     def teleopPeriodic(self):
         '''Called on each iteration of the control loop'''
-        pass
-
+        self.driveTrain.arcade_drive(self.joy1.getX(), self.joy1.getY())
 if __name__ == '__main__':
     wpilib.run(MyRobot)
