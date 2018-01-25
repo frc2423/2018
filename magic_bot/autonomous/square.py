@@ -8,22 +8,21 @@ class Square(AutonomousStateMachine):
     DEFAULT = True
 
     driveTrain = DriveTrain
-    init_angle = driveTrain.getAngle()
-    interval = 1
 
     @timed_state(duration=2, next_state='turn', first=True)
     def forward(self):
         '''This happens first'''
         self.driveTrain.forward()
-
+        self.driveTrain.resetGyro()
 
     @state()
     def turn(self):
         '''This happens second'''
         self.driveTrain.turn()
-
-        if self.driveTrain.getAngle() == self.interval * (self.init_angle + 90):
+        print(self.driveTrain.getAngle())
+        if self.driveTrain.getAngle() >= 90:
             self.next_state_now('forward')
-            self.interval = self.interval + 1
+            self.done()
+
 
 

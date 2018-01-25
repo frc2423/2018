@@ -31,3 +31,6 @@ class DriveTrain:
 
     def getAngle(self):
         return self.gyro.getAngle()
+
+    def resetGyro(self):
+        self.gyro.reset()
