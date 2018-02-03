@@ -21,7 +21,7 @@ class MyRobot(magicbot.MagicRobot):
         self.turn_rate = 0
         self.speed = 0
         self.saved_turn_rate = 0
-
+        self.save_tx = 0
 
     def teleopPeriodic(self):
         '''Called on each iteration of the control loop'''
@@ -31,27 +31,28 @@ class MyRobot(magicbot.MagicRobot):
         ta = self.table.getNumber('ta', None)
         ts = self.table.getNumber('ts', None)
         tv = self.table.getNumber('tv', None)
-
+        print("ta:", ta)
         if tv == 0:
             self.speed = 0
-            if self.saved_turn_rate != 0:
-                self.turn_rate = (self.saved_turn_rate)
+            if self.save_tx > 0:
+                self.turn_rate = .5
             else:
-                self.turn_rate = 0
+                self.turn_rate = -.5
         else:
             self.turn_rate = tx / 27 if tx is not None else 0
-            self.speed = -.4
-            self.saved_turn_rate = self.turn_rate
+            self.save_tx = tx
+            if ta > 40:
+                self.speed = -.1
+            else:
+                self.speed = -.1 - .6*(40 - ta) / 40
+            #print("speed:", self.speed)
+            #print("ta:", ta)
 
         self.robot_drive.arcadeDrive(self.turn_rate, self.speed)
+        #self.robot_drive.arcadeDrive(0,0)
+        #print('tx, ty: ', tx, ty)
+        #print("turn_rate: ", self.turn_rate)
 
-        print('tx, ty: ', tx, ty)
-        print("saved_turn_rate: ", self.saved_turn_rate)
-
-        if tv == 1:
-            print("target acquired")
-        else :
-            print("no target")
 
 
 

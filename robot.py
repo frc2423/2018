@@ -41,9 +41,9 @@ class MyRobot(wpilib.IterativeRobot):
     def teleopPeriodic(self):
         #self.robot_drive.arcadeDrive(self.r_joy)
 
-        turn_rate = self.l_joy.getX()*0.5
+        turn_rate = self.l_joy.getX()
         speed = self.l_joy.getY()
-        self.robot_drive.arcadeDrive(turn_rate, speed)
+        self.robot_drive.arcadeDrive(turn_rate, speed * 1)
         if self.l_joy.getTrigger():
             self.shooter.set(wpilib.Relay.Value.kReverse)
         else:
