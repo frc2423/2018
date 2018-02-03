@@ -21,7 +21,7 @@ class Square(AutonomousStateMachine):
         self.driveTrain.turn()
         print(self.driveTrain.getAngle())
         if self.driveTrain.getAngle() >= 90:
-            self.next_state_now('forward')
+            self.next_state('forward')
             self.done()
 
 

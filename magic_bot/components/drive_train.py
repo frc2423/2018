@@ -1,4 +1,5 @@
 import wpilib
+import wpilib.drive
 from robotpy_ext.common_drivers import navx
 
 class DriveTrain:
@@ -34,3 +35,7 @@ class DriveTrain:
 
     def resetGyro(self):
         self.gyro.reset()
+
+    def arcade(self, turn_rate, speed):
+        self.turn_rate = turn_rate
+        self.speed = speed
