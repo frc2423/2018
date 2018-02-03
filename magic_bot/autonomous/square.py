@@ -22,7 +22,7 @@ class Square(AutonomousStateMachine):
         print(self.driveTrain.getAngle())
         if self.driveTrain.getAngle() >= 90:
             self.next_state('forward')
-            self.done()
+
 
 
 

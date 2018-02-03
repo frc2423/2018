@@ -5,7 +5,7 @@ from components.drive_train import DriveTrain
 
 
 class DriveForward(AutonomousStateMachine):
-    MODE_NAME = 'DriveForward'
+    MODE_NAME = 'DriveForwa'
     DEFAULT = False
 
 

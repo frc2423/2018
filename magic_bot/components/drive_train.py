@@ -16,11 +16,11 @@ class DriveTrain:
 
     def forward(self):
         self.turn_rate = 0
-        self.speed = 0.5
+        self.speed = -0.5
 
     def backward(self):
         self.turn_rate = 0
-        self.speed = -0.5
+        self.speed = 0.5
 
     def stop(self):
         self.turn_rate = 0
