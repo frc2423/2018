@@ -34,7 +34,7 @@ class MyRobot(magicbot.MagicRobot):
 
     def teleopInit(self):
         '''Called when teleop starts; optional'''
-        self.arm_speed = .30
+        self.arm_speed = .45
 
     def teleopPeriodic(self):
 
@@ -48,16 +48,14 @@ class MyRobot(magicbot.MagicRobot):
         print(self.arm_speed)
 
         if self.joystick.getRawButton(3):
-            self.l_arm.set(self.arm_speed)
+            self.l_arm.set(-self.arm_speed)
             self.r_arm.set(-self.arm_speed)
         elif self.joystick.getRawButton(2):
-            self.l_arm.set(-self.arm_speed)
+            self.l_arm.set(self.arm_speed)
             self.r_arm.set(self.arm_speed)
         else:
-            self.l_arm.set(0)
-            self.r_arm.set(0)
-
-
+            self.l_arm.set(0.25)
+            self.r_arm.set(0.25)
 
 
 
