@@ -2,12 +2,15 @@ import magicbot
 import wpilib
 import ctre
 from components.drive_train import DriveTrain
+from components.arms import Arms
+from components.elevator import Elevator
 from robotpy_ext.common_drivers import navx
 import wpilib.drive
 
 
 class MyRobot(magicbot.MagicRobot):
 
+    arms = Arms
     driveTrain = DriveTrain
 
     def createObjects(self):
@@ -30,32 +33,46 @@ class MyRobot(magicbot.MagicRobot):
 
         self.shooter = wpilib.Relay(1)
         self.joystick = wpilib.Joystick(0)
+        self.joystick2 = wpilib.Joystick(1)
+
+        self.elevator = ctre.wpi_talonsrx.WPI_TalonSRX(0)
+        self.elevator_follower = ctre.wpi_talonsrx.WPI_TalonSRX(1)
+        self.elevator_follower.set(ctre.wpi_talonsrx.WPI_TalonSRX.ControlMode.Follower, 0)
+
+        self.elevator_encoder = wpilib.Encoder(2)
+
+        self.PIDController = wpilib.PIDController(.1, 0, 0, self.elevator_encoder, self.elevator.elevator_position)
 
 
     def teleopInit(self):
         '''Called when teleop starts; optional'''
-        self.arm_speed = .45
+        self.arm_speed = 0
+        self.turn_rate = 0
+        self.robot_speed = 0
 
     def teleopPeriodic(self):
 
-        self.driveTrain.arcade(self.joystick.getX(), self.joystick.getY())
+        self.robot_speed = self.joystick.getY()
+        self.turn_rate = self.joystick.getX()
 
-        if self.joystick.getRawButtonPressed(5):
-            self.arm_speed += .02
-        elif self.joystick.getRawButtonPressed(4):
-            self.arm_speed -= .02
+        if self.joystick.getTrigger():
+            self.driveTrain.arcade(self.turn_rate, self.robot_speed)
+        else:
+            self.driveTrain.arcade(self.turn_rate/2, self.robot_speed/2)
+
+        if self.joystick2.getTrigger():
+            if self.joystick2.getY() < 0:
+                self.arms.intake()
+            elif self.joystick2.getY() > 0:
+                self.arms.outtake()
+        else:
+            self.arms.stop()
+
+            #self.l_arm.set(self.joystick2.getY())
+            #self.r_arm.set(self.joystick2.getY())
 
         print(self.arm_speed)
 
-        if self.joystick.getRawButton(3):
-            self.l_arm.set(-self.arm_speed)
-            self.r_arm.set(-self.arm_speed)
-        elif self.joystick.getRawButton(2):
-            self.l_arm.set(self.arm_speed)
-            self.r_arm.set(self.arm_speed)
-        else:
-            self.l_arm.set(0.25)
-            self.r_arm.set(0.25)
 
 
 
