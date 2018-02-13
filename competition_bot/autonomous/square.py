@@ -5,7 +5,7 @@ from components.drive_train import DriveTrain
 
 class Square(AutonomousStateMachine):
     MODE_NAME = 'Square'
-    DEFAULT = True
+    DEFAULT = False
 
     driveTrain = DriveTrain
 

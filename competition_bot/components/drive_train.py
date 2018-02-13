@@ -1,11 +1,15 @@
 import wpilib
 import wpilib.drive
 from robotpy_ext.common_drivers import navx
+import ctre
 
 class DriveTrain:
 
-    robot_drive = wpilib.RobotDrive
-    gyro = navx.AHRS
+    robot_drive : wpilib.RobotDrive
+    gyro : navx.AHRS
+    br_motor : ctre.wpi_talonsrx.WPI_TalonSRX
+    fl_motor : ctre.wpi_talonsrx.WPI_TalonSRX
+
 
     def __init__(self):
         self.turn_rate = 0
@@ -39,3 +43,15 @@ class DriveTrain:
     def arcade(self, turn_rate, speed):
         self.turn_rate = turn_rate
         self.speed = speed
+
+    def get_left_distance(self):
+        ticks_per_foot = -630.8
+        pos = self.fl_motor.getQuadraturePosition()
+        feet = pos / ticks_per_foot
+        return feet
+        # br: 912.6/ft
+    def get_right_distance(self):
+        pos = self.br_motor.getQuadraturePosition()
+        ticks_per_foot = 912.6
+        feet = pos / ticks_per_foot
+        return feet

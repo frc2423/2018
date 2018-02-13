@@ -12,6 +12,7 @@ class MyRobot(magicbot.MagicRobot):
 
     arms = Arms
     driveTrain = DriveTrain
+    elevator = Elevator
 
     def createObjects(self):
         #fl, bl, fr, br = (30, 50, 40, 10) # practice bot
@@ -24,6 +25,7 @@ class MyRobot(magicbot.MagicRobot):
         self.fr_motor.setInverted(True)
         self.br_motor.setInverted(True)
 
+
         self.l_arm = wpilib.Spark(0)
         self.r_arm = wpilib.Spark(1)
 
@@ -35,13 +37,15 @@ class MyRobot(magicbot.MagicRobot):
         self.joystick = wpilib.Joystick(0)
         self.joystick2 = wpilib.Joystick(1)
 
-        self.elevator = ctre.wpi_talonsrx.WPI_TalonSRX(0)
+        self.elevator_motor = ctre.wpi_talonsrx.WPI_TalonSRX(0)
         self.elevator_follower = ctre.wpi_talonsrx.WPI_TalonSRX(1)
         self.elevator_follower.set(ctre.wpi_talonsrx.WPI_TalonSRX.ControlMode.Follower, 0)
 
-        self.elevator_encoder = wpilib.Encoder(2)
 
-        self.PIDController = wpilib.PIDController(.1, 0, 0, self.elevator_encoder, self.elevator.elevator_position)
+
+        self.elevator_encoder = wpilib.Encoder(2, 3)
+
+        self.pid = wpilib.PIDController(.1, 0, 0, self.elevator_encoder, self.elevator.elevator_position)
 
 
     def teleopInit(self):
@@ -49,6 +53,8 @@ class MyRobot(magicbot.MagicRobot):
         self.arm_speed = 0
         self.turn_rate = 0
         self.robot_speed = 0
+        self.br_motor.setQuadraturePosition(0, 0)
+        self.fl_motor.setQuadraturePosition(0, 0)
 
     def teleopPeriodic(self):
 
@@ -71,8 +77,17 @@ class MyRobot(magicbot.MagicRobot):
             #self.l_arm.set(self.joystick2.getY())
             #self.r_arm.set(self.joystick2.getY())
 
-        print(self.arm_speed)
+        #print(self.arm_speed)
+        right_pos = self.br_motor.getQuadraturePosition()
+        left_pos = self.fl_motor.getQuadraturePosition()
+        #print('encoder pos: (', left_pos, ',', right_pos, ')')
 
+        #10ft: fl=-6308 br=9126
+        #fl: -630.8/ft
+        #br: 912.6/ft
+
+        print("left", self.driveTrain.get_left_distance())
+        print("right", self.driveTrain.get_right_distance())
 
 
 
