@@ -61,6 +61,15 @@ class MyRobot(magicbot.MagicRobot):
         self.robot_speed = self.joystick.getY()
         self.turn_rate = self.joystick.getX()
 
+        if self.joystick.getRawButton(2)
+            self.elevator.down()
+        elif self.joystick.getRawButton(3)
+            self.elevator.up()
+        else
+            self.elevator.stop()
+
+
+
         if self.joystick.getTrigger():
             self.driveTrain.arcade(self.turn_rate, self.robot_speed)
         else:
