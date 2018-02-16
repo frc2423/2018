@@ -39,5 +39,6 @@ class Elevator:
 
     def set_height(self, height):
         ticks = height * self.distance_per_tick
-        self.pid.enable()
-        self.pid.setSetpoint(ticks)
+        if self.pid.getSetpoint() != ticks or not self.pid.isEnabled():
+            self.pid.enable()
+            self.pid.setSetpoint(ticks)

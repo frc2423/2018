@@ -14,21 +14,32 @@ class DriveNDrop(AutonomousStateMachine):
     arms = Arms
     elevator = Elevator
 
-    @timed_state(duration=3, next_state='turn', first=True)
+    @state(first=True)
     def drive_forward(self):
-        self.driveTrain.forward()
+        self.elevator.set_height(8)
+        if self.driveTrain.get_left_distance() < 10:
+            self.driveTrain.forward()
+        else:
+            self.next_state('turn')
 
     @state()
     def turn(self):
         if self.driveTrain.getAngle() < 90:
             self.driveTrain.turn()
         else:
-            self.next_state('elevate')
+            self.next_state('forward_again')
 
     @state()
-    def elevate(self):
-        if get_height(self) =
+    def forward_again(self):
+        if self.driveTrain.get_left_distance() < 2:
+            self.driveTrain.forward()
+        else:
+            self.next_state('drop')
 
-    @timed_state(duration=2)
+    @timed_state(duration=2, next_state='do_nothing')
     def drop(self):
         self.arms.outtake()
+
+    @state()
+    def do_nothing(self):
+        pass

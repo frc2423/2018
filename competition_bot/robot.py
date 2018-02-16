@@ -25,6 +25,7 @@ class MyRobot(magicbot.MagicRobot):
         self.fr_motor.setInverted(True)
         self.br_motor.setInverted(True)
 
+        self.drive_train_pid =  wpilib.PIDController(.1, 0, 0, self.gyro, self.driveTrain.forward())
 
         self.l_arm = wpilib.Spark(0)
         self.r_arm = wpilib.Spark(1)
@@ -45,7 +46,7 @@ class MyRobot(magicbot.MagicRobot):
 
         self.elevator_encoder = wpilib.Encoder(2, 3)
 
-        self.pid = wpilib.PIDController(.1, 0, 0, self.elevator_encoder, self.elevator.elevator_position)
+        self.elevator_pid = wpilib.PIDController(.1, 0, 0, self.elevator_encoder, self.elevator.elevator_position)
 
 
     def teleopInit(self):
