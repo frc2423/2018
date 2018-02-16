@@ -3,9 +3,8 @@ from magicbot import AutonomousStateMachine, tunable, timed_state, state
 from components.drive_train import DriveTrain
 
 
-
 class DriveForward(AutonomousStateMachine):
-    MODE_NAME = 'DriveForwa'
+    MODE_NAME = 'DriveForward'
     DEFAULT = False
 
 

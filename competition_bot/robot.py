@@ -25,7 +25,7 @@ class MyRobot(magicbot.MagicRobot):
         self.fr_motor.setInverted(True)
         self.br_motor.setInverted(True)
 
-        self.drive_train_pid =  wpilib.PIDController(.1, 0, 0, self.gyro, self.driveTrain.forward())
+        self.drive_train_pid =  wpilib.PIDController(.1, 0, 0, self.gyro, self.driveTrain.set_pid_turn_rate)
 
         self.l_arm = wpilib.Spark(0)
         self.r_arm = wpilib.Spark(1)
@@ -40,7 +40,7 @@ class MyRobot(magicbot.MagicRobot):
 
         self.elevator_motor = ctre.wpi_talonsrx.WPI_TalonSRX(0)
         self.elevator_follower = ctre.wpi_talonsrx.WPI_TalonSRX(1)
-        self.elevator_follower.set(ctre.wpi_talonsrx.WPI_TalonSRX.ControlMode.Follower, 0)
+        self.elevator_follower.follow(self.elevator_motor)
 
 
 
