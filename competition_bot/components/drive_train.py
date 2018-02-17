@@ -47,9 +47,14 @@ class DriveTrain:
         self.turn_rate = 0
         self.speed = 0
 
-    def turn(self):
+    def turn_right(self):
         self.turn_pid_off()
         self.turn_rate = 0.5
+        self.speed = 0
+
+    def turn_left(self):
+        self.turn_pid_off()
+        self.turn_rate = -0.5
         self.speed = 0
 
     def getAngle(self):

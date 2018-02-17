@@ -23,7 +23,8 @@ class Elevator:
         self.speed = speed
 
     def execute(self):
-        self.elevator_motor.set(self.speed)
+        #self.elevator_motor.set(self.speed)
+        pass
 
     def up(self):
         self.elevator_pid.disable()

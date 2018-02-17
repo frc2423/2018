@@ -2,7 +2,7 @@
 	1. Test Autonomous modes and elevator + arm
 	2. if right - put cube in switch. if left - drive to starting.
 2. UI
-	1. Multi-step autonomous mode chooser
+	1. Multi-step autonomous mode chooser: David
 	2. Camera feed
 	3. Elevator Slider for height
 	4. Emergency stop
