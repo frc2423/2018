@@ -1,0 +1,68 @@
+#doom {
+    position: absolute;
+	height: 220px;
+	width:350px;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+	margin-left: auto;
+	margin-right: auto;
+    /*margin: auto;*/
+	text-align: center;
+}
+
+#auto_chooser {
+	text-align: center;
+	position: relative;
+	height: 175px;
+	width: 400px;
+	outline: solid;
+	outline-width: 2;
+	outline-color: black;
+}
+
+#position_chooser {
+	position: relative;	
+	height:50px;
+	width: 400px;
+	outline: solid;
+	outline-width: 1px;
+	outline-color: black;
+}
+
+#position_chooser {
+	position: relative;	
+	height:50px;
+	width: 400px;
+	outline: solid;
+	outline-width: 1px;
+	outline-color: black;
+}
+
+#left_switch_chooser {
+	position: relative;	
+	height:50px;
+	width: 400px;
+	outline: solid;
+	outline-width: 1px;
+	outline-color: black;
+}
+
+#right_switch_chooser {
+	position:relative;
+	height:50px;
+	width:400px;
+	outline: solid;
+	outline-width: 1px;
+	outline-color: black;
+}
+
+#right_switch_chooser {
+	position:relative;
+	height:50px;
+	width:400px;
+	outline: solid;
+	outline-width: 1px;
+	outline-color: black;
+}
