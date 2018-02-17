@@ -12,8 +12,8 @@ class DriveTrain:
     fl_motor : ctre.wpi_talonsrx.WPI_TalonSRX
 
     def setup(self):
-        self.elevator_pid.setOutputRange(-1, 1)
-        self.elevator_pid.setInputRange(-360, 360)
+        self.drive_train_pid.setOutputRange(-1, 1)
+        self.drive_train_pid.setInputRange(-360, 360)
 
     def __init__(self):
         self.turn_rate = 0

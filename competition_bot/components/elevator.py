@@ -19,7 +19,7 @@ class Elevator:
         self.elevator_pid.setOutputRange(-1, 1)
         self.elevator_pid.setInputRange(0, self.TICKS_TO_TOP)
 
-    def elevator_position(self, speed ):
+    def elevator_position(self, speed):
         self.speed = speed
 
     def execute(self):

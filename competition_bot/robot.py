@@ -25,14 +25,20 @@ class MyRobot(magicbot.MagicRobot):
         self.fr_motor.setInverted(True)
         self.br_motor.setInverted(True)
 
-        self.drive_train_pid =  wpilib.PIDController(.1, 0, 0, self.gyro, self.driveTrain.set_pid_turn_rate)
+        self.gyro = navx.AHRS.create_spi()
+
+        driveTrain = self.driveTrain
+
+        def set_pid_turn_rate(turn_rate):
+            driveTrain.turn_rate = turn_rate
+
+
+        self.drive_train_pid =  wpilib.PIDController(.1, 0, 0, self.gyro, set_pid_turn_rate)
 
         self.l_arm = wpilib.Spark(0)
         self.r_arm = wpilib.Spark(1)
 
         self.robot_drive = wpilib.RobotDrive(self.fl_motor, self.bl_motor, self.fr_motor, self.br_motor)
-
-        self.gyro = navx.AHRS.create_spi()
 
         self.shooter = wpilib.Relay(1)
         self.joystick = wpilib.Joystick(0)
@@ -46,7 +52,11 @@ class MyRobot(magicbot.MagicRobot):
 
         self.elevator_encoder = wpilib.Encoder(2, 3)
 
-        self.elevator_pid = wpilib.PIDController(.1, 0, 0, self.elevator_encoder, self.elevator.elevator_position)
+        elevator = self.elevator
+        def elevator_position(speed):
+            elevator.speed = speed
+
+        self.elevator_pid = wpilib.PIDController(.1, 0, 0, self.elevator_encoder, elevator_position)
 
 
     def teleopInit(self):
@@ -62,14 +72,12 @@ class MyRobot(magicbot.MagicRobot):
         self.robot_speed = self.joystick.getY()
         self.turn_rate = self.joystick.getX()
 
-        if self.joystick.getRawButton(2)
+        if self.joystick.getRawButton(2):
             self.elevator.down()
-        elif self.joystick.getRawButton(3)
+        elif self.joystick.getRawButton(3):
             self.elevator.up()
-        else
+        else:
             self.elevator.stop()
-
-
 
         if self.joystick.getTrigger():
             self.driveTrain.arcade(self.turn_rate, self.robot_speed)
