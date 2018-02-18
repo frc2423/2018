@@ -15,8 +15,19 @@ class MyRobot(magicbot.MagicRobot):
     elevator = Elevator
 
     def createObjects(self):
-        #fl, bl, fr, br = (30, 50, 40, 10) # practice bot
-        br, fr, bl, fl = (1, 7, 2, 5) #on competition robot
+
+        self.init_drive_train()
+        self.init_arms()
+        self.init_elevator()
+
+        self.joystick = wpilib.Joystick(0)
+        self.joystick2 = wpilib.Joystick(1)
+
+
+
+    def init_drive_train(self):
+        # fl, bl, fr, br = (30, 50, 40, 10) # practice bot
+        br, fr, bl, fl = (1, 7, 2, 5)  # on competition robot
 
         self.br_motor = ctre.wpi_talonsrx.WPI_TalonSRX(br)
         self.bl_motor = ctre.wpi_talonsrx.WPI_TalonSRX(bl)
@@ -31,21 +42,21 @@ class MyRobot(magicbot.MagicRobot):
 
         def set_pid_turn_rate(turn_rate):
             driveTrain.turn_rate = turn_rate
+            pass
 
-
-        self.drive_train_pid =  wpilib.PIDController(.1, 0, 0, self.gyro, set_pid_turn_rate)
-
-        self.l_arm = wpilib.Spark(0)
-        self.r_arm = wpilib.Spark(1)
+        self.drive_train_pid = wpilib.PIDController(.1, 0, 0, self.gyro, set_pid_turn_rate)
 
         self.robot_drive = wpilib.RobotDrive(self.fl_motor, self.bl_motor, self.fr_motor, self.br_motor)
 
-        self.shooter = wpilib.Relay(1)
-        self.joystick = wpilib.Joystick(0)
-        self.joystick2 = wpilib.Joystick(1)
+    def init_arms(self):
+        self.l_arm = wpilib.Spark(0)
+        self.r_arm = wpilib.Spark(1)
+
+
+    def init_elevator(self):
 
         self.elevator_motor = ctre.wpi_talonsrx.WPI_TalonSRX(0)
-        self.elevator_follower = ctre.wpi_talonsrx.WPI_TalonSRX(1)
+        self.elevator_follower = ctre.wpi_talonsrx.WPI_TalonSRX(4)
         self.elevator_follower.follow(self.elevator_motor)
 
 
@@ -55,6 +66,7 @@ class MyRobot(magicbot.MagicRobot):
         elevator = self.elevator
         def elevator_position(speed):
             elevator.speed = speed
+            pass
 
         self.elevator_pid = wpilib.PIDController(.1, 0, 0, self.elevator_encoder, elevator_position)
 
@@ -69,9 +81,7 @@ class MyRobot(magicbot.MagicRobot):
 
     def teleopPeriodic(self):
 
-        self.robot_speed = self.joystick.getY()
-        self.turn_rate = self.joystick.getX()
-
+        # ELEVATOR CODE
         if self.joystick.getRawButton(2):
             self.elevator.down()
         elif self.joystick.getRawButton(3):
@@ -79,11 +89,18 @@ class MyRobot(magicbot.MagicRobot):
         else:
             self.elevator.stop()
 
+
+        # DRIVE TRAIN CODE
+        self.robot_speed = self.joystick.getY()
+        self.turn_rate = self.joystick.getX()
+
         if self.joystick.getTrigger():
             self.driveTrain.arcade(self.turn_rate, self.robot_speed)
         else:
             self.driveTrain.arcade(self.turn_rate/2, self.robot_speed/2)
 
+
+        # ARM CODE
         if self.joystick2.getTrigger():
             if self.joystick2.getY() < 0:
                 self.arms.intake()
@@ -92,20 +109,8 @@ class MyRobot(magicbot.MagicRobot):
         else:
             self.arms.stop()
 
-            #self.l_arm.set(self.joystick2.getY())
-            #self.r_arm.set(self.joystick2.getY())
 
-        #print(self.arm_speed)
-        right_pos = self.br_motor.getQuadraturePosition()
-        left_pos = self.fl_motor.getQuadraturePosition()
-        #print('encoder pos: (', left_pos, ',', right_pos, ')')
 
-        #10ft: fl=-6308 br=9126
-        #fl: -630.8/ft
-        #br: 912.6/ft
-
-        print("left", self.driveTrain.get_left_distance())
-        print("right", self.driveTrain.get_right_distance())
 
 
 

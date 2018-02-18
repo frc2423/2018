@@ -8,6 +8,7 @@ from components.elevator import Elevator
 class DriveNDrop(AutonomousStateMachine):
     MODE_NAME = 'DriveNDrop'
     DEFAULT = True
+    DISABLED = True
 
 
     driveTrain = DriveTrain
