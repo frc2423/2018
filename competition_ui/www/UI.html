@@ -3,6 +3,7 @@
 	<head>
 		<title>Power Up!</title>
 		<link rel="stylesheet" href="UI.css"/>
+		
 	</head>
 
 	<body>
@@ -12,28 +13,33 @@
 		<p style="text-align:center">
 	<div>
 	<!-- End of embed code -->
-	
+
+	<div id="camera_feed">
+		camera feed placeholder
+	<!--	<img height="300" width="400" src=""/> -->
+	</div>
+
 	<div id="auto_chooser">
 		<div>Autonomous Mode</div>
 		<div id="position_chooser">
 			<div>Starting Position</div>
-			<input type="radio" name="position" id="position_radio">Left</input>
-			<input type="radio" name="position" id="position_radio">Middle</input>
-			<input type="radio" name="position" id="position_radio">Right</input>
-		</div>	
+			<input type="radio" name="position" value="left" id="position_left"/><label for="position_left">Left</label>
+			<input type="radio" name="position" value="mid" id="position_mid"/><label for="position_mid">Middle</label>
+			<input type="radio" name="position" value="right" id="position_right"/><label for="position_right">Right</label>
+		</div>
 		
 		<div id="left_switch_chooser">
 			<div>If Switch is on Left</div>
-			<input type="radio" name="position">Do Nothing</input>
-			<input type="radio" name="position">Drive Forward</input>
-			<input type="radio" name="position">Put Cube on Switch</input>
+			<input type="radio" name="left_switch" value="nothing" id="left_switch_nothing"/><label for="left_switch_nothing">Do Nothing</label>
+			<input type="radio" name="left_switch" value="foward" id="left_switch_forward"/><label for="left_switch_forward">Drive Forward</label>
+			<input type="radio" name="left_switch" value="cube" id="left_switch_cube"/><label for="left_switch_cube">Put Cube on Switch</label>
 		</div>
 		
 		<div id="right_swtich_chooser">
 			<div>If Switch is on Right</div>
-			<input type="radio" name="position">Do Nothing</input>
-			<input type="radio" name="position">Drive Forward</input>
-			<input type="radio" name="position">Put Cube on Switch</input>
+			<input type="radio" name="right_switch" value="nothing" id="right_switch_nothing"/><label for="right_switch_nothing">Do Nothing</label>
+			<input type="radio" name="right_switch" value="forward" id="right_switch_forward"/><label for="right_switch_forward">Drive Forward</label>
+			<input type="radio" name="right_switch" value="cube" id="right_switch_cube"/><label for="right_switch_cube">Put cube on switch</label>
 		</div> 
 	</div>
 		
