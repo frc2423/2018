@@ -6,6 +6,7 @@ from components.arms import Arms
 from components.elevator import Elevator
 from robotpy_ext.common_drivers import navx
 import wpilib.drive
+from networktables import NetworkTables
 
 
 class MyRobot(magicbot.MagicRobot):
@@ -22,9 +23,13 @@ class MyRobot(magicbot.MagicRobot):
 
         self.joystick = wpilib.Joystick(0)
         self.joystick2 = wpilib.Joystick(1)
+        self.table = NetworkTables.getTable("limelight")
 
+    def disabledInit(self):
+        self.table.putNumber("ledMode", 1)
 
-
+    def autonomousInit(self):
+        self.table.putNumber("ledMode", 0)
     def init_drive_train(self):
         # fl, bl, fr, br = (30, 50, 40, 10) # practice bot
         br, fr, bl, fl = (1, 7, 2, 5)  # on competition robot
@@ -61,7 +66,7 @@ class MyRobot(magicbot.MagicRobot):
 
 
 
-        self.elevator_encoder = wpilib.Encoder(2, 3)
+        self.elevator_encoder = wpilib.Encoder(0, 1)
 
         elevator = self.elevator
         def elevator_position(speed):
@@ -78,9 +83,10 @@ class MyRobot(magicbot.MagicRobot):
         self.robot_speed = 0
         self.br_motor.setQuadraturePosition(0, 0)
         self.fl_motor.setQuadraturePosition(0, 0)
+        self.table.putNumber("ledMode", 0)
 
     def teleopPeriodic(self):
-
+        print("encoder value", self.elevator_encoder.get())
         # ELEVATOR CODE
         if self.joystick2.getRawButton(3):
             self.elevator.down()
