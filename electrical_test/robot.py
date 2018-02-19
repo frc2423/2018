@@ -28,13 +28,18 @@ class MyRobot(magicbot.MagicRobot):
         self.joystick = wpilib.Joystick(0)
         self.joystick2 = wpilib.Joystick(1)
 
+        self.elevator1 = ctre.wpi_talonsrx.WPI_TalonSRX(4)
+        self.elevator2 = ctre.wpi_talonsrx.WPI_TalonSRX(10)
+        self.elevator2.follow(self.elevator1)
+
     def teleopInit(self):
         '''Called when teleop starts; optional'''
         pass
 
     def teleopPeriodic(self):
         self.robot_drive.arcadeDrive(self.joystick.getY(), self.joystick.getX())
-
+        self.elevator1.set(.5)
+        #self.elevator2.set(.5)
 
 
 if __name__ == '__main__':

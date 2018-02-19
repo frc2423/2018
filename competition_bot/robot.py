@@ -55,8 +55,8 @@ class MyRobot(magicbot.MagicRobot):
 
     def init_elevator(self):
 
-        self.elevator_motor = ctre.wpi_talonsrx.WPI_TalonSRX(0)
-        self.elevator_follower = ctre.wpi_talonsrx.WPI_TalonSRX(4)
+        self.elevator_motor = ctre.wpi_talonsrx.WPI_TalonSRX(4)
+        self.elevator_follower = ctre.wpi_talonsrx.WPI_TalonSRX(10)
         self.elevator_follower.follow(self.elevator_motor)
 
 
@@ -82,9 +82,9 @@ class MyRobot(magicbot.MagicRobot):
     def teleopPeriodic(self):
 
         # ELEVATOR CODE
-        if self.joystick.getRawButton(2):
+        if self.joystick2.getRawButton(3):
             self.elevator.down()
-        elif self.joystick.getRawButton(3):
+        elif self.joystick2.getRawButton(2):
             self.elevator.up()
         else:
             self.elevator.stop()

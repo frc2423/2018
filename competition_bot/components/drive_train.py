@@ -20,7 +20,6 @@ class DriveTrain:
         self.speed = 0
 
     def execute(self):
-        print('turn_rate, speed:', self.turn_rate, self.speed)
         self.robot_drive.arcadeDrive(self.turn_rate, self.speed)
 
 
