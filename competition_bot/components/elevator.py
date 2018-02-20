@@ -23,7 +23,6 @@ class Elevator:
         self.speed = speed
 
     def execute(self):
-        print('ELEVATOR SPEED:', self.speed)
         self.elevator_motor.set(self.speed)
 
     def up(self):

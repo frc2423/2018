@@ -32,6 +32,8 @@ class MyRobot(magicbot.MagicRobot):
         self.elevator2 = ctre.wpi_talonsrx.WPI_TalonSRX(10)
         self.elevator2.follow(self.elevator1)
 
+        self.elevator_encoder = wpilib.Encoder(0, 1)
+
     def teleopInit(self):
         '''Called when teleop starts; optional'''
         pass
@@ -40,6 +42,7 @@ class MyRobot(magicbot.MagicRobot):
         self.robot_drive.arcadeDrive(self.joystick.getY(), self.joystick.getX())
         self.elevator1.set(.5)
         #self.elevator2.set(.5)
+        print('elevator position:', self.elevator_encoder.get())
 
 
 if __name__ == '__main__':
