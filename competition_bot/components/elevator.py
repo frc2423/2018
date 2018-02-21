@@ -26,11 +26,11 @@ class Elevator:
 
     def up(self):
         self.elevator_pid.disable()
-        self.speed = -0.45
+        self.speed = -0.5
 
     def down(self):
         self.elevator_pid.disable()
-        self.speed = 0.4
+        self.speed = 0.3
 
     def stop(self):
         self.elevator_pid.enable()

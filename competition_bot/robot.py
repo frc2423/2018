@@ -103,7 +103,7 @@ class MyRobot(magicbot.MagicRobot):
         if self.joystick.getTrigger():
             self.driveTrain.arcade(self.turn_rate, self.robot_speed)
         else:
-            self.driveTrain.arcade(self.turn_rate/2, self.robot_speed/2)
+            self.driveTrain.arcade(self.turn_rate*.75, self.robot_speed*.75)
 
 
         # ARM CODE
