@@ -66,14 +66,14 @@ class MyRobot(magicbot.MagicRobot):
 
 
 
-        self.elevator_encoder = wpilib.Encoder(0, 1)
+        #self.elevator_encoder = wpilib.Encoder(0, 1)
 
         elevator = self.elevator
         def elevator_position(speed):
             elevator.speed = speed
             pass
 
-        self.elevator_pid = wpilib.PIDController(.1, 0, 0, self.elevator_encoder, elevator_position)
+        self.elevator_pid = wpilib.PIDController(.1, 0, 0, self.elevator_follower.getQuadraturePosition, elevator_position)
 
 
     def teleopInit(self):
@@ -86,11 +86,11 @@ class MyRobot(magicbot.MagicRobot):
         self.table.putNumber("ledMode", 0)
 
     def teleopPeriodic(self):
-        print("encoder value", self.elevator_encoder.get(), self.elevator_encoder.getRaw(), self.elevator_encoder.getDistance())
+        print("encoder value", self.elevator_follower.getQuadraturePosition())
         # ELEVATOR CODE
-        if self.joystick2.getRawButton(3):
+        if self.joystick2.getRawButton(2):
             self.elevator.down()
-        elif self.joystick2.getRawButton(2):
+        elif self.joystick2.getRawButton(3):
             self.elevator.up()
         else:
             self.elevator.stop()

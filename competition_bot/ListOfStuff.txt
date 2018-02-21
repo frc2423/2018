@@ -8,8 +8,9 @@
 	4. Emergency stop
 	5. Current speed
 	6. Gyro Position
+	7. voltage
+	8. elevator up + down speeds AND way to adjust up + down speeds on UI or joysticks
 3. Limelight
 	1. Track cubes with camera
 	2. 
 4. Establish communist state
-`	
