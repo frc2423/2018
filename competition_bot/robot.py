@@ -62,11 +62,11 @@ class MyRobot(magicbot.MagicRobot):
         self.robot_speed = self.joystick.getY()
         self.turn_rate = self.joystick.getX()
 
-        if self.joystick.getRawButton(2)
+        if self.joystick.getRawButton(2):
             self.elevator.down()
-        elif self.joystick.getRawButton(3)
+        elif self.joystick.getRawButton(3):
             self.elevator.up()
-        else
+        else:
             self.elevator.stop()
 
 
