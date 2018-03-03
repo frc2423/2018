@@ -74,3 +74,33 @@
 	width:400px;
 	outline: solid;
 }
+
+#elevator_slider {
+	position: absolute;
+	right: 5%;
+	top: 5%;
+	width: 20px;
+}
+
+.slider {
+	-webkit-appearance: slider-vertical;
+    width: 20px;
+    height: 200px;
+	outline: solid;
+	background: rgba(0,0,0,0);
+	
+}
+
+.slider::-webkit-slider-thumb{
+	-webkit-appearance: none;
+	background-color: black;
+	width: 10px;
+	height: 5px;
+	cursor: pointer;
+}
+
+.slider::-moz-range-thumb{
+	width:10px;
+	height: 5px;
+	cursor: pointer;
+}
