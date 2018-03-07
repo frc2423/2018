@@ -10,6 +10,7 @@ class DriveTrain:
     drive_train_pid : wpilib.PIDController
     br_motor : ctre.wpi_talonsrx.WPI_TalonSRX
     fl_motor : ctre.wpi_talonsrx.WPI_TalonSRX
+    ACC = 0.3
 
     def setup(self):
         self.drive_train_pid.setOutputRange(-1, 1)
@@ -20,8 +21,20 @@ class DriveTrain:
         self.speed = 0
 
     def execute(self):
-        self.robot_drive.arcadeDrive(self.turn_rate, self.speed)
+        #set dt to 0 for first time run
+        current_time = self.wpilib.Timer.getFPGATimestamp()
+        dt = current_time - self.previous_time
+        if self.cur_speed * self.des_speed < 0:
+            self.cur_speed = 0
+        direction = 1 if self.des_speed > 0 else -1
+        if abs(self.cur_speed) < abs(self.des_speed):
+            self.cur_speed = self.cur_speed + self.ACC * dt * direction
+        if abs(self.cur_speed) > abs(self.des_speed):
+            self.cur_speed = self.des_speed
 
+
+        self.robot_drive.arcadeDrive(self.turn_rate, self.speed)
+        self.previous_time = current_time
 
     def set_pid_turn_rate(self, turn_rate):
         self.turn_rate = turn_rate
@@ -80,3 +93,5 @@ class DriveTrain:
         feet = pos / ticks_per_foot
         return feet
 
+    def set_speed(self, speed):
+        self.des_speed = speed
