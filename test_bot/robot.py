@@ -44,9 +44,9 @@ class MyRobot(magicbot.MagicRobot):
         if self.joystick.getTrigger():
             #self.fl_motor.set(.5)
             #self.fr_motor.set(.5)
-            self.robot_drive.arcadeDrive(self.turn_rate, self.robot_speed)
+            self.robot_drive.arcadeDrive(self.turn_rate*.65, self.robot_speed)
         else:
-            self.robot_drive.arcadeDrive(self.turn_rate * .75, self.robot_speed * .75)
+            self.robot_drive.arcadeDrive(self.turn_rate * .65, self.robot_speed * .75)
             #self.fl_motor.set(0)
             #self.fr_motor.set(0)
 
