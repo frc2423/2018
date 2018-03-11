@@ -2,6 +2,8 @@ import wpilib
 import wpilib.drive
 from robotpy_ext.common_drivers import navx
 import ctre
+from wpilib.timer import Timer
+
 
 class DriveTrain:
 
@@ -10,43 +12,77 @@ class DriveTrain:
     drive_train_pid : wpilib.PIDController
     br_motor : ctre.wpi_talonsrx.WPI_TalonSRX
     fl_motor : ctre.wpi_talonsrx.WPI_TalonSRX
-    ACC = 0.3
+    ACC = 0.5
+    TURN_ACC = 1.2
 
     def setup(self):
         self.drive_train_pid.setOutputRange(-1, 1)
         self.drive_train_pid.setInputRange(-360, 360)
 
     def __init__(self):
-        self.turn_rate = 0
+        self.min_speed = 0.3
+        self.min_turn_rate = 0.2
+
+    def on_enable(self):
         self.speed = 0
+        self.previous_time = None
+        self.cur_speed = 0
+        self.des_speed = 0
+        self.cur_turn_rate = 0
+        self.des_turn_rate = 0
+        self.acc_toggle = True
+        print("on_enable")
+
+    def toggle_acc(self):
+        self.acc_toggle = not self.acc_toggle
 
     def execute(self):
-        #set dt to 0 for first time run
-        current_time = self.wpilib.Timer.getFPGATimestamp()
-        dt = current_time - self.previous_time
-        if self.cur_speed * self.des_speed < 0:
-            self.cur_speed = 0
-        direction = 1 if self.des_speed > 0 else -1
-        if abs(self.cur_speed) < abs(self.des_speed):
-            self.cur_speed = self.cur_speed + self.ACC * dt * direction
-        if abs(self.cur_speed) > abs(self.des_speed):
-            self.cur_speed = self.des_speed
+        current_time = Timer.getFPGATimestamp()
+        dt = 0 if self.previous_time is None else current_time - self.previous_time
 
+        #print("DESIRED_SPEED", self.des_speed)
+        #print("CURRENT_SPEED", self.cur_speed)
 
-        self.robot_drive.arcadeDrive(self.turn_rate, self.speed)
+        self.cur_speed = self.accelerate(self.cur_speed, self.des_speed, dt, self.min_speed, self.ACC)
+        self.cur_turn_rate = self.accelerate(self.cur_turn_rate, self.des_turn_rate, dt, self.min_turn_rate, self.TURN_ACC)
+        if self.acc_toggle:
+            self.robot_drive.arcadeDrive(self.cur_turn_rate, self.cur_speed)
+            print('acc')
+        else:
+            self.robot_drive.arcadeDrive(self.des_turn_rate, self.des_speed)
+            print('no acc')
         self.previous_time = current_time
 
+
+    def accelerate(self, cur_speed, des_speed, dt, min_speed, ACC):
+
+        if cur_speed * des_speed < 0:
+            cur_speed = 0
+        if des_speed > 0.3 and cur_speed < min_speed:
+            cur_speed = min_speed
+        elif des_speed < -0.3 and cur_speed > -min_speed:
+            cur_speed = -min_speed
+
+        direction = 1 if des_speed > 0 else -1
+        if abs(cur_speed) < abs(des_speed):
+            cur_speed = cur_speed + ACC * dt * direction
+        if abs(cur_speed) > abs(des_speed):
+            cur_speed = des_speed
+
+        return cur_speed
+
+
     def set_pid_turn_rate(self, turn_rate):
-        self.turn_rate = turn_rate
+        self.des_turn_rate = turn_rate
 
     def forward(self):
-        self.speed = -.5
+        self.des_speed = -.5
         if not self.drive_train_pid.isEnabled():
             self.drive_train_pid.enable()
             self.drive_train_pid.setSetpoint(self.gyro.getAngle())
 
     def backward(self):
-        self.speed = .5
+        self.des_speed = .5
         if not self.drive_train_pid.isEnabled():
             self.drive_train_pid.enable()
             self.drive_train_pid.setSetpoint(self.gyro.getAngle())
@@ -57,18 +93,18 @@ class DriveTrain:
 
     def stop(self):
         self.turn_pid_off()
-        self.turn_rate = 0
-        self.speed = 0
+        self.des_turn_rate = 0
+        self.des_speed = 0
 
     def turn_right(self):
         self.turn_pid_off()
-        self.turn_rate = 0.5
-        self.speed = 0
+        self.des_turn_rate = 0.5
+        self.des_speed = 0
 
     def turn_left(self):
         self.turn_pid_off()
-        self.turn_rate = -0.5
-        self.speed = 0
+        self.des_turn_rate = -0.5
+        self.des_speed = 0
 
     def getAngle(self):
         return self.gyro.getAngle()
@@ -78,8 +114,8 @@ class DriveTrain:
 
     def arcade(self, turn_rate, speed):
         self.turn_pid_off()
-        self.turn_rate = turn_rate
-        self.speed = speed
+        self.des_turn_rate = turn_rate
+        self.des_speed = speed
 
     def get_left_distance(self):
         ticks_per_foot = -630.8
@@ -92,6 +128,3 @@ class DriveTrain:
         ticks_per_foot = 912.6
         feet = pos / ticks_per_foot
         return feet
-
-    def set_speed(self, speed):
-        self.des_speed = speed

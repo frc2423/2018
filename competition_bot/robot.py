@@ -21,6 +21,8 @@ class MyRobot(magicbot.MagicRobot):
         self.init_arms()
         self.init_elevator()
 
+        self.button10_prev = False
+
         self.joystick = wpilib.Joystick(0)
         self.joystick2 = wpilib.Joystick(1)
         self.table = NetworkTables.getTable("limelight")
@@ -31,7 +33,7 @@ class MyRobot(magicbot.MagicRobot):
     def autonomousInit(self):
         self.table.putNumber("ledMode", 0)
     def init_drive_train(self):
-        # fl, bl, fr, br = (30, 50, 40, 10) # practice bot
+        #fl, bl, fr, br = (30, 40, 50, 10)  # practice bot
         br, fr, bl, fl = (1, 7, 2, 5)  # on competition robot
 
         self.br_motor = ctre.wpi_talonsrx.WPI_TalonSRX(br)
@@ -61,7 +63,7 @@ class MyRobot(magicbot.MagicRobot):
     def init_elevator(self):
 
         self.elevator_motor = ctre.wpi_talonsrx.WPI_TalonSRX(4)
-        self.elevator_follower = ctre.wpi_talonsrx.WPI_TalonSRX(10)
+        self.elevator_follower = ctre.wpi_talonsrx.WPI_TalonSRX(5)
         self.elevator_follower.follow(self.elevator_motor)
 
 
@@ -86,7 +88,7 @@ class MyRobot(magicbot.MagicRobot):
         self.table.putNumber("ledMode", 0)
 
     def teleopPeriodic(self):
-        print("encoder value", self.elevator_follower.getQuadraturePosition())
+        #print("encoder value", self.elevator_follower.getQuadraturePosition())
         # ELEVATOR CODE
         if self.joystick2.getRawButton(2):
             self.elevator.down()
@@ -95,15 +97,23 @@ class MyRobot(magicbot.MagicRobot):
         else:
             self.elevator.stop()
 
+        button10_cur = self.joystick2.getRawButton(10)
+        acc_toggle_btn_clicked = not self.button10_prev and button10_cur
+
+        if acc_toggle_btn_clicked:
+            self.driveTrain.toggle_acc()
+
+        self.button10_prev = button10_cur
+
 
         # DRIVE TRAIN CODE
         self.robot_speed = self.joystick.getY()
         self.turn_rate = self.joystick.getX()
 
         if self.joystick.getTrigger():
-            self.driveTrain.arcade(self.turn_rate, self.robot_speed)
+            self.driveTrain.arcade(self.turn_rate * .7, self.robot_speed)
         else:
-            self.driveTrain.arcade(self.turn_rate*.75, self.robot_speed*.75)
+            self.driveTrain.arcade(self.turn_rate*.7, self.robot_speed*.75)
 
 
         # ARM CODE
