@@ -63,7 +63,7 @@ class MyRobot(magicbot.MagicRobot):
     def init_elevator(self):
 
         self.elevator_motor = ctre.wpi_talonsrx.WPI_TalonSRX(4)
-        self.elevator_follower = ctre.wpi_talonsrx.WPI_TalonSRX(5)
+        self.elevator_follower = ctre.wpi_talonsrx.WPI_TalonSRX(10)
         self.elevator_follower.follow(self.elevator_motor)
 
 
@@ -110,17 +110,14 @@ class MyRobot(magicbot.MagicRobot):
         self.robot_speed = self.joystick.getY()
         self.turn_rate = self.joystick.getX()
 
-        if self.joystick.getTrigger():
-            self.driveTrain.arcade(self.turn_rate * .7, self.robot_speed)
-        else:
-            self.driveTrain.arcade(self.turn_rate*.7, self.robot_speed*.75)
+        self.driveTrain.arcade(self.turn_rate * .8, self.robot_speed)
 
 
         # ARM CODE
         if self.joystick2.getTrigger():
-            if self.joystick2.getY() < 0:
+            if self.joystick2.getY() > 0:
                 self.arms.intake()
-            elif self.joystick2.getY() > 0:
+            elif self.joystick2.getY() < 0:
                 self.arms.outtake()
         else:
             self.arms.stop()

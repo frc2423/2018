@@ -12,12 +12,12 @@ class Arms:
         self.r_arm_speed = 0
 
     def intake(self):
-        self.l_arm_speed = .4
-        self.r_arm_speed = -.4
-
-    def outtake(self):
         self.l_arm_speed = -.4
         self.r_arm_speed = .4
+
+    def outtake(self):
+        self.l_arm_speed = .7
+        self.r_arm_speed = -.7
 
     def stop(self):
         self.l_arm_speed = -.25
