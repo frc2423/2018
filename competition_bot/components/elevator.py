@@ -26,7 +26,7 @@ class Elevator:
 
     def up(self):
         self.elevator_pid.disable()
-        self.speed = -1
+        self.speed = -0.7
 
     def down(self):
         self.elevator_pid.disable()

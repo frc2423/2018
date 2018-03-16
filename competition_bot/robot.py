@@ -116,9 +116,9 @@ class MyRobot(magicbot.MagicRobot):
         # ARM CODE
         if self.joystick2.getTrigger():
             if self.joystick2.getY() > 0:
-                self.arms.intake()
-            elif self.joystick2.getY() < 0:
                 self.arms.outtake()
+            elif self.joystick2.getY() < 0:
+                self.arms.intake()
         else:
             self.arms.stop()
 
