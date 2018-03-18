@@ -1,20 +1,19 @@
+
 #doom {
-    position: absolute;
-	height: 220px;
-	width:350px;
-    top:0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    position: fixed;
+	top: 0px;
 	margin-left: auto;
 	margin-right: auto;
-    /*margin: auto;*/
+	height: 220px;
+	width:350px;
 	text-align: center;
 }
 
 #auto_chooser {
 	text-align: center;
-	position: relative;
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
 	height: 175px;
 	width: 400px;
 	outline: solid;
@@ -70,16 +69,19 @@
 
 
 #camera_feed {
+	position: fixed;
+	left: 450px;
 	height: 300px;
 	width:400px;
 	outline: solid;
 }
 
 #elevator_slider {
-	position: absolute;
+	position: fixed;
 	right: 5%;
 	top: 5%;
-	width: 20px;
+	height: 400px;
+	width: 30px;
 }
 
 .slider {

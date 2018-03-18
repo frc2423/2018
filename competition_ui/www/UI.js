@@ -9,3 +9,4 @@ $("input[name='left_switch']").change( function() {
 $("input[name='right_switch']").change( function() {
 	NetworkTables.putValue("/autonomous/DriveNDrop/action_if right_switch", $("input[name='right_switch']:checked").val())
 });
+

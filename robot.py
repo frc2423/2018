@@ -5,18 +5,19 @@
 
 import wpilib
 import ctre
-from robotpy_ext.common_drivers import navx
+#from robotpy_ext.common_drivers import navx
 from networktables import NetworkTables
 
 
 class MyRobot(wpilib.IterativeRobot):
 
     def robotInit(self):
-        self.br_motor = ctre.CANTalon(10)
-        self.bl_motor = ctre.CANTalon(50)
-        self.fl_motor = ctre.CANTalon(30)
-        self.fr_motor = ctre.CANTalon(40)
+        self.br_motor = ctre.wpi_talonsrx.WPI_TalonSRX(10)
+        self.bl_motor = ctre.wpi_talonsrx.WPI_TalonSRX(50)
+        self.fl_motor = ctre.wpi_talonsrx.WPI_TalonSRX(30)
+        self.fr_motor = ctre.wpi_talonsrx.WPI_TalonSRX(40)
         self.fr_motor.setInverted(True)
+
         self.br_motor.setInverted(True)
 
         self.l_joy = wpilib.Joystick(0)
@@ -28,7 +29,7 @@ class MyRobot(wpilib.IterativeRobot):
         self.robot_drive = wpilib.RobotDrive(self.fl_motor, self.bl_motor, self.fr_motor, self.br_motor)
         self.table = NetworkTables.getTable('SmartDashboard')
 
-        self.gyro = navx.AHRS.create_spi()
+        #self.gyro = navx.AHRS.create_spi()
 
 
     def autonomousInit(self):
@@ -53,7 +54,7 @@ class MyRobot(wpilib.IterativeRobot):
             self.feeder.set(wpilib.Relay.Value.kReverse)
         else:
             self.feeder.set(wpilib.Relay.Value.kOff)
-        print(self.gyro.getAngle())
+        #print(self.gyro.getAngle())
 
 if __name__ == "__main__":
     wpilib.run(MyRobot)

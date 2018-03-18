@@ -6,8 +6,8 @@
 		
 	</head>
 
-	<body>
-	<!--Doom embed code cuz idk
+
+	<!--Doom embed code cuz idk 
 	<div id="doom">
 		<iframe src="https://www.silvergames.com/en/doom/iframe" width="350" height="220" style="margin:0;padding:0;border:0"></iframe>
 		<p style="text-align:center">
@@ -20,11 +20,19 @@
 
 	<div id="auto_chooser">
 		<div>Autonomous Mode</div>
+		
+		<div id="temp_auto_modes">
+			<input type="radio" name="position" value="do_nothing" id="temp_nothing"/><label for="position_left">Do Nothing</label>
+			<input type="radio" name="position" value="drive_forward" id="temp_forward"/><label for="position_left">Drive Forward</label>
+			<input type="radio" name="position" value="drop_if_left" id="temp_if_left"/><label for="position_mid">Drop if Left</label>
+			<input type="radio" name="position" value="drop_if_right" id="temp_if_right"/><label for="position_right">Drop if Right</label>
+		</div>
+		<!--
 		<div id="position_chooser">
 			<div>Starting Position</div>
-			<input type="radio" name="position" value="left" id="position_left"/><label for="position_left">Left</label>
-			<input type="radio" name="position" value="mid" id="position_mid"/><label for="position_mid">Middle</label>
-			<input type="radio" name="position" value="right" id="position_right"/><label for="position_right">Right</label>
+			<input type="radio" name="position" value="L" id="position_left"/><label for="position_left">Left</label>
+			<input type="radio" name="position" value="M" id="position_mid"/><label for="position_mid">Middle</label>
+			<input type="radio" name="position" value="R" id="position_right"/><label for="position_right">Right</label>
 		</div>
 		
 		<div id="left_switch_chooser">
@@ -38,8 +46,9 @@
 			<div>If Switch is on Right</div>
 			<input type="radio" name="right_switch" value="nothing" id="right_switch_nothing"/><label for="right_switch_nothing">Do Nothing</label>
 			<input type="radio" name="right_switch" value="forward" id="right_switch_forward"/><label for="right_switch_forward">Drive Forward</label>
-			<input type="radio" name="right_switch" value="cube" id="right_switch_cube"/><label for="right_switch_cube">Put cube on switch</label>
-		</div> 
+			<input type="radio" name="right_switch" value="cube" id="right_switch_cube"/><label for="right_switch_cube">Put Cube on switch</label>
+		</div>
+		-->
 	</div>
 	
 	<div id="elevator_slider">

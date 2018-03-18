@@ -8,9 +8,8 @@ class Elevator:
     elevator_motor : ctre.wpi_talonsrx.WPI_TalonSRX
     elevator_pid : wpilib.PIDController
     distance_per_tick = 5
-    elevator_encoder : wpilib.Encoder
     TICKS_TO_TOP = 1000
-
+    elevator_follower : ctre.wpi_talonsrx.WPI_TalonSRX
     def __init__(self):
         self.speed = 0
         self.setpoint = 0
@@ -19,7 +18,7 @@ class Elevator:
         self.elevator_pid.setOutputRange(-1, 1)
         self.elevator_pid.setInputRange(0, self.TICKS_TO_TOP)
 
-    def elevator_position(self, speed ):
+    def elevator_position(self, speed):
         self.speed = speed
 
     def execute(self):
@@ -27,16 +26,16 @@ class Elevator:
 
     def up(self):
         self.elevator_pid.disable()
-        self.speed = 0.5
+        self.speed = -1
 
     def down(self):
         self.elevator_pid.disable()
-        self.speed = -0.4
+        self.speed = 0.3
 
     def stop(self):
-        self.elevator_pid.enable()
-        self.speed = 0
-        self.elevator_pid.setSetpoint(self.elevator_encoder.get())
+        #self.elevator_pid.enable()
+        self.speed = -0.3
+        #self.elevator_pid.setSetpoint(self.elevator_follower.getQuadraturePosition())
 
     def get_height(self):
         pos = self.elevator_encoder.get()

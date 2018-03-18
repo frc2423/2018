@@ -5,12 +5,12 @@ from components.drive_train import DriveTrain
 
 class DriveForward(AutonomousStateMachine):
     MODE_NAME = 'DriveForward'
-    DEFAULT = False
+    DEFAULT = True
 
 
     driveTrain = DriveTrain
 
-    @timed_state(duration=3, next_state='do_nothing', first=True)
+    @timed_state(duration=8, next_state='do_nothing', first=True)
     def turn(self):
         '''This happens first'''
         self.driveTrain.forward()

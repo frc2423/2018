@@ -1,0 +1,16 @@
+1. Autonomous
+	1. Test Autonomous modes and elevator + arm
+	2. if right - put cube in switch. if left - drive to starting.
+2. UI
+	1. Multi-step autonomous mode chooser: David
+	2. Camera feed
+	3. Elevator Slider for height
+	4. Emergency stop
+	5. Current speed
+	6. Gyro Position
+	7. voltage
+	8. elevator up + down speeds AND way to adjust up + down speeds on UI or joysticks
+3. Limelight
+	1. Track cubes with camera
+	2. 
+4. Establish communist state
