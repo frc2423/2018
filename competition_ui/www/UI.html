@@ -17,6 +17,9 @@
 	<div id="camera_feed">
 		<img height="300" width="400" src="http://10.24.23.11:5800"/>
 	</div>
+	
+	
+	<canvas id="c" width="500" height="500"></canvas>
 
 	<div id="auto_chooser">
 		<div>Autonomous Mode</div>
@@ -27,6 +30,9 @@
 			<input type="radio" name="position" value="drop_if_left" id="temp_if_left"/><label for="position_mid">Drop if Left</label>
 			<input type="radio" name="position" value="drop_if_right" id="temp_if_right"/><label for="position_right">Drop if Right</label>
 		</div>
+		
+		
+		
 		<!--
 		<div id="position_chooser">
 			<div>Starting Position</div>
@@ -38,7 +44,7 @@
 		<div id="left_switch_chooser">
 			<div>If Switch is on Left</div>
 			<input type="radio" name="left_switch" value="nothing" id="left_switch_nothing"/><label for="left_switch_nothing">Do Nothing</label>
-			<input type="radio" name="left_switch" value="foward" id="left_switch_forward"/><label for="left_switch_forward">Drive Forward</label>
+			<input type="radio" name="left_switch" value="forward" id="left_switch_forward"/><label for="left_switch_forward">Drive Forward</label>
 			<input type="radio" name="left_switch" value="cube" id="left_switch_cube"/><label for="left_switch_cube">Put Cube on Switch</label>
 		</div>
 		
@@ -55,7 +61,7 @@
 		<input type="range" class="slider" id="slider" min="0" max="100" value="0"/>
 	</div>
 		
-		
+	<script src="/scripts/fabric.min.js"></script>
 	<script src="/scripts/jquery-2.2.2.min.js"></script>
 	<script src="/networktables/networktables.js"></script> 
 	<script src="UI.js"></script>
