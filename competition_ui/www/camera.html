@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Power Up! Camera</title>		
+		<style>
+			body {
+				margin: 0;
+			}
+		
+			#camera_feed {
+				margin: 0 auto;
+			}
+		
+			#camera_feed img {
+				display: block;
+				width: 100%;
+			}
+		
+		</style>
+	</head>
+	<body>
+		<div id="camera_feed">
+			<img src="http://10.24.23.11:5800"/>
+		</div> 
+		
+		
+		<script src="/scripts/jquery-2.2.2.min.js"></script>
+		<script src="/networktables/networktables.js"></script> 
+		<script src="UI.js"></script>
+		<script>
+		
+		setCameraFeedHeight();
+		
+		$(window).on('resize', setCameraFeedHeight);
+		
+		
+		function setCameraFeedHeight() {
+			var windowHeight =  $(window).height();
+			var aspect = 900/675;
+			var width = windowHeight * aspect;
+			console.log(width);
+			$('#camera_feed').css('width', width);
+		}
+		
+		</script>
+	</body>
+
+</html>
