@@ -40,17 +40,11 @@ class DriveTrain:
         current_time = Timer.getFPGATimestamp()
         dt = 0 if self.previous_time is None else current_time - self.previous_time
 
-        #print("DESIRED_SPEED", self.des_speed)
-        #print("CURRENT_SPEED", self.cur_speed)
 
         self.cur_speed = self.accelerate(self.cur_speed, self.des_speed, dt, self.min_speed, self.ACC)
         self.cur_turn_rate = self.accelerate(self.cur_turn_rate, self.des_turn_rate, dt, self.min_turn_rate, self.TURN_ACC)
-        if self.acc_toggle:
-            self.robot_drive.arcadeDrive(self.cur_turn_rate, self.cur_speed)
-            print('acc')
-        else:
-            self.robot_drive.arcadeDrive(self.des_turn_rate, self.des_speed)
-            print('no acc')
+        self.robot_drive.arcadeDrive(self.cur_turn_rate, self.cur_speed)
+
         self.previous_time = current_time
 
 

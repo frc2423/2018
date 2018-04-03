@@ -88,9 +88,8 @@ class MyRobot(magicbot.MagicRobot):
         self.table.putNumber("ledMode", 0)
 
     def teleopPeriodic(self):
-        #print("encoder value", self.elevator_follower.getQuadraturePosition())
+        print("encoder value", self.elevator_follower.getQuadraturePosition())
         # ELEVATOR CODE
-        print("gyro: ", self.gyro.getAngle())
         if self.joystick2.getRawButton(2):
             self.elevator.down()
         elif self.joystick2.getRawButton(3):

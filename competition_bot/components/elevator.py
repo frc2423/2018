@@ -21,20 +21,42 @@ class Elevator:
     def elevator_position(self, speed):
         self.speed = speed
 
+
+    def is_max_height(self):
+        bottom, top = self.elevator_follower.getLimitSwitchState()
+        return top == 1
+
+    def is_min_height(self):
+        bottom, top = self.elevator_follower.getLimitSwitchState()
+        return bottom == 1
+
     def execute(self):
+        if self.is_max_height():
+            print('max height')
+        elif self.is_min_height():
+            print('min height')
+
+
         self.elevator_motor.set(self.speed)
 
     def up(self):
         self.elevator_pid.disable()
-        self.speed = -1
+        if self.is_max_height():
+            self.stop()
+        else:
+            self.speed = -1
 
     def down(self):
         self.elevator_pid.disable()
-        self.speed = 0.3
+        if self.is_min_height():
+            self.stop()
+        else:
+            self.speed = 0.3
 
     def stop(self):
+        print('stoooped!')
         #self.elevator_pid.enable()
-        self.speed = -0.3
+        self.speed = -0.3 if not self.is_min_height() else 0
         #self.elevator_pid.setSetpoint(self.elevator_follower.getQuadraturePosition())
 
     def get_height(self):
