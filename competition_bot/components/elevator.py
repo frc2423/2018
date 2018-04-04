@@ -7,8 +7,9 @@ class Elevator:
 
     elevator_motor : ctre.wpi_talonsrx.WPI_TalonSRX
     elevator_pid : wpilib.PIDController
-    distance_per_tick = 5
-    TICKS_TO_TOP = 1000
+    ELEVATOR_HEIGHT = 5
+    TICKS_TO_TOP = 4320
+    DISTANCE_PER_TICK = ELEVATOR_HEIGHT / TICKS_TO_TOP
     elevator_follower : ctre.wpi_talonsrx.WPI_TalonSRX
     def __init__(self):
         self.speed = 0
@@ -43,29 +44,36 @@ class Elevator:
         self.elevator_pid.disable()
         if self.is_max_height():
             self.stop()
+            self.set_encoder(self.TICKS_TO_TOP)
         else:
-            self.speed = -1
+            self.speed = -.8
 
     def down(self):
         self.elevator_pid.disable()
         if self.is_min_height():
             self.stop()
+            self.set_encoder(0)
         else:
-            self.speed = 0.3
+            self.speed = 0.25
 
     def stop(self):
-        print('stoooped!')
         #self.elevator_pid.enable()
         self.speed = -0.3 if not self.is_min_height() else 0
         #self.elevator_pid.setSetpoint(self.elevator_follower.getQuadraturePosition())
 
     def get_height(self):
-        pos = self.elevator_encoder.get()
-        feet = pos / self.distance_per_tick
+        pos = self.get_encoder()
+        feet = pos * self.DISTANCE_PER_TICK
         return feet
 
     def set_height(self, height):
-        ticks = height * self.distance_per_tick
+        ticks = height / self.DISTANCE_PER_TICK
         if self.elevator_pid.getSetpoint() != ticks or not self.elevator_pid.isEnabled():
             self.elevator_pid.enable()
             self.elevator_pid.setSetpoint(ticks)
+
+    def get_encoder(self):
+        return -self.elevator_follower.getQuadraturePosition()
+
+    def set_encoder(self, ticks):
+        self.elevator_follower.setQuadraturePosition(-ticks, 0)
