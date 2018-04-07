@@ -67,15 +67,11 @@ class MyRobot(magicbot.MagicRobot):
         self.elevator_follower.follow(self.elevator_motor)
 
 
+        def pid_output(speed):
+            if self.elevator.is_pid_enabled():
+                self.elevator.speed = speed
 
-        #self.elevator_encoder = wpilib.Encoder(0, 1)
-
-        elevator = self.elevator
-        def elevator_position(speed):
-            elevator.speed = speed
-            pass
-
-        self.elevator_pid = wpilib.PIDController(.1, 0, 0, self.elevator_follower.getQuadraturePosition, elevator_position)
+        self.elevator_pid = wpilib.PIDController(.1, 0, 0, self.elevator_follower.getQuadraturePosition, pid_output)
 
 
     def teleopInit(self):
@@ -88,14 +84,21 @@ class MyRobot(magicbot.MagicRobot):
         self.table.putNumber("ledMode", 0)
 
     def teleopPeriodic(self):
-        print("encoder value", self.elevator_follower.getQuadraturePosition())
+        #print("encoder value", self.elevator_follower.getQuadraturePosition())
+
         # ELEVATOR CODE
         if self.joystick2.getRawButton(2):
             self.elevator.down()
         elif self.joystick2.getRawButton(3):
             self.elevator.up()
-        else:
+        elif not self.elevator.is_pid_enabled():
             self.elevator.stop()
+
+
+        if self.joystick2.getRawButton(11) or self.joystick2.getRawButton(6):
+            self.elevator.set_height(1.7)
+        elif self.joystick2.getRawButton(10) or self.joystick2.getRawButton(7):
+            self.elevator.set_height(0)
 
         button10_cur = self.joystick2.getRawButton(10)
         acc_toggle_btn_clicked = not self.button10_prev and button10_cur
