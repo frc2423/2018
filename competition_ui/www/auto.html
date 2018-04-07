@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Power Up!</title>
+		<link rel="stylesheet" href="UI.css"/>
+
+	</head>
+
+    <h2>Autonomous Picker:</h2>
+    <select id="auto-picker"></select>
+
+	<script src="/scripts/jquery-2.2.2.min.js"></script>
+	<script src="/networktables/networktables.js"></script>
+
+
+    <script>
+        // This adds the autonomous options to the selector
+        // The parameter options is a comma separated string
+
+        var currentAuto = null;
+
+        function setAutoOptions(options) {
+            // turn options into an array
+            console.log('OPTIONS:', options);
+
+
+            for (var i = 0; i < options.length; i++) {
+                var option = options[i];
+                var html = '<option value="' + option + '">' + option + '</option>';
+                $('#auto-picker').append(html);
+            }
+
+            setAuto();
+        }
+
+        function setAuto() {
+            if (currentAuto) {
+                $('#auto-picker').val(currentAuto);
+            }
+        }
+
+        NetworkTables.addGlobalListener(function(key, value, isNew){
+            if (key == '/SmartDashboard/Autonomous Mode/options') {
+                setAutoOptions(value);
+            }
+            else if (key == '/SmartDashboard/Autonomous Mode/selected') {
+                currentAuto = value;
+                setAuto();
+            }
+            // do something with the values as they change
+        }, true);
+
+
+        $('#auto-picker').on('change', function() {
+            var value = $('#auto-picker').val();
+            console.log(value);
+            NetworkTables.putValue('/SmartDashboard/Autonomous Mode/selected', value);
+        });
+
+
+
+    </script>
+
+	</body>
+
+</html>
