@@ -2,6 +2,7 @@ import magicbot
 import wpilib
 import ctre
 from components.drive_train import DriveTrain
+from components.direction_pid import Direction_Pid
 from components.arms import Arms
 from components.elevator import Elevator
 from components.elevator_pid import Elevator_Pid
@@ -14,6 +15,7 @@ class MyRobot(magicbot.MagicRobot):
 
     arms = Arms
     driveTrain = DriveTrain
+    direction_pid = Direction_Pid
     elevator = Elevator
     elevator_pid = Elevator_Pid
 

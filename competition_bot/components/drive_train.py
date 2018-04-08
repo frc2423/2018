@@ -9,15 +9,10 @@ class DriveTrain:
 
     robot_drive : wpilib.RobotDrive
     gyro : navx.AHRS
-    drive_train_pid : wpilib.PIDController
     br_motor : ctre.wpi_talonsrx.WPI_TalonSRX
     fl_motor : ctre.wpi_talonsrx.WPI_TalonSRX
     ACC = 0.5
     TURN_ACC = 1.2
-
-    def setup(self):
-        self.drive_train_pid.setOutputRange(-1, 1)
-        self.drive_train_pid.setInputRange(-360, 360)
 
     def __init__(self):
         self.min_speed = 0.3
@@ -66,39 +61,28 @@ class DriveTrain:
         return cur_speed
 
 
-    def set_pid_turn_rate(self, turn_rate):
-        self.des_turn_rate = turn_rate
-
-    def forward(self):
-        self.des_speed = -.5
-        if not self.drive_train_pid.isEnabled():
-            self.drive_train_pid.enable()
-            self.drive_train_pid.setSetpoint(self.gyro.getAngle())
-
-    def backward(self):
-        self.des_speed = .5
-        if not self.drive_train_pid.isEnabled():
-            self.drive_train_pid.enable()
-            self.drive_train_pid.setSetpoint(self.gyro.getAngle())
 
 
     def turn_pid_off(self):
         self.drive_train_pid.disable()
 
     def stop(self):
-        self.turn_pid_off()
         self.des_turn_rate = 0
         self.des_speed = 0
 
     def turn_right(self):
-        self.turn_pid_off()
         self.des_turn_rate = 0.5
         self.des_speed = 0
 
     def turn_left(self):
-        self.turn_pid_off()
         self.des_turn_rate = -0.5
         self.des_speed = 0
+
+    def set_turn_rate(self, turn_rate):
+        self.des_turn_rate = turn_rate
+
+    def set_speed(self, speed):
+        self.des_speed = speed
 
     def getAngle(self):
         return self.gyro.getAngle()
@@ -107,7 +91,6 @@ class DriveTrain:
         self.gyro.reset()
 
     def arcade(self, turn_rate, speed):
-        self.turn_pid_off()
         self.des_turn_rate = turn_rate
         self.des_speed = speed
 
@@ -117,6 +100,7 @@ class DriveTrain:
         feet = pos / ticks_per_foot
         return feet
         # br: 912.6/ft
+
     def get_right_distance(self):
         pos = self.br_motor.getQuadraturePosition()
         ticks_per_foot = 912.6
