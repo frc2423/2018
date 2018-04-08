@@ -4,6 +4,7 @@ import ctre
 from components.drive_train import DriveTrain
 from components.arms import Arms
 from components.elevator import Elevator
+from components.elevator_pid import Elevator_Pid
 from robotpy_ext.common_drivers import navx
 import wpilib.drive
 from networktables import NetworkTables
@@ -14,6 +15,7 @@ class MyRobot(magicbot.MagicRobot):
     arms = Arms
     driveTrain = DriveTrain
     elevator = Elevator
+    elevator_pid = Elevator_Pid
 
     def createObjects(self):
 
@@ -67,12 +69,6 @@ class MyRobot(magicbot.MagicRobot):
         self.elevator_follower.follow(self.elevator_motor)
 
 
-        def pid_output(speed):
-            if self.elevator.is_pid_enabled():
-                self.elevator.speed = speed
-
-        self.elevator_pid = wpilib.PIDController(.1, 0, 0, self.elevator_follower.getQuadraturePosition, pid_output)
-
 
     def teleopInit(self):
         '''Called when teleop starts; optional'''
@@ -88,25 +84,18 @@ class MyRobot(magicbot.MagicRobot):
 
         # ELEVATOR CODE
         if self.joystick2.getRawButton(2):
+            self.elevator_pid.disable()
             self.elevator.down()
         elif self.joystick2.getRawButton(3):
+            self.elevator_pid.disable()
             self.elevator.up()
-        elif not self.elevator.is_pid_enabled():
+        elif not self.elevator_pid.isEnabled():
             self.elevator.stop()
 
-
         if self.joystick2.getRawButton(11) or self.joystick2.getRawButton(6):
-            self.elevator.set_height(1.7)
+            self.elevator_pid.set_height(1.7)
         elif self.joystick2.getRawButton(10) or self.joystick2.getRawButton(7):
-            self.elevator.set_height(0)
-
-        button10_cur = self.joystick2.getRawButton(10)
-        acc_toggle_btn_clicked = not self.button10_prev and button10_cur
-
-        if acc_toggle_btn_clicked:
-            self.driveTrain.toggle_acc()
-
-        self.button10_prev = button10_cur
+            self.elevator_pid.set_height(0)
 
 
         # DRIVE TRAIN CODE
