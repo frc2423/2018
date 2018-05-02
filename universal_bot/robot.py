@@ -8,6 +8,8 @@ from subsystems.drive_train import Drive_Train
 from subsystems.arms import Arms
 from subsystems.elevator import Elevator
 
+from controllers.accelerator import Accelerator
+
 
 
 
@@ -20,6 +22,10 @@ class MyRobot(wpilib.IterativeRobot):
 
         self.joystick = wpilib.Joystick(0)
         self.joystick2 = wpilib.Joystick(1)
+
+
+        self.speed_accelerator = Accelerator(1)
+        self.turn_rate_accelerator = Accelerator(1)
 
 
 
@@ -37,7 +43,12 @@ class MyRobot(wpilib.IterativeRobot):
         # drive train code
         turn_rate = self.joystick.getX()
         speed = self.joystick.getY()
-        self.drive_train.arcade(turn_rate, speed)
+
+
+        self.speed_accelerator.set_desired(speed)
+        self.turn_rate_accelerator.set_desired(turn_rate)
+
+        self.drive_train.arcade(self.turn_rate_accelerator.get(), self.speed_accelerator.get())
 
         # arms code
         if self.joystick2.getTrigger():
