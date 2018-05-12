@@ -11,6 +11,8 @@ from subsystems.elevator import Elevator
 from controllers.accelerator import Accelerator
 from controllers.elevator_pid_controller import Elevator_Pid_Controller
 
+from controllers.angle_pid_controller import Angle_Pid_Controller
+
 
 
 class MyRobot(wpilib.IterativeRobot):
@@ -29,7 +31,7 @@ class MyRobot(wpilib.IterativeRobot):
 
         self.elevator_pid = Elevator_Pid_Controller(self.elevator.get_encoder, self.elevator.TICKS_TO_TOP, self.elevator.ELEVATOR_HEIGHT)
 
-
+        self.angle_pid = Angle_Pid_Controller(self.drive_train.get_angle)
 
 
 
@@ -45,14 +47,22 @@ class MyRobot(wpilib.IterativeRobot):
     def teleopPeriodic(self):
 
         # drive train code
-        turn_rate = self.joystick.getX()
-        speed = self.joystick.getY()
+        turn_rate = 0
+        speed = 0
 
+        if self.joystick.getRawButton(10):
+            self.angle_pid.set_angle(0)
+            turn_rate = self.angle_pid.get_turn()
+        elif self.joystick.getRawButton(11):
+            self.angle_pid.set_angle(180)
+            turn_rate = self.angle_pid.get_turn()
+        else:
+            self.speed_accelerator.set_desired(self.joystick.getY())
+            self.turn_rate_accelerator.set_desired(self.joystick.getX())
+            speed = self.speed_accelerator.get()
+            turn_rate = self.turn_rate_accelerator.get()
 
-        self.speed_accelerator.set_desired(speed)
-        self.turn_rate_accelerator.set_desired(turn_rate)
-
-        self.drive_train.arcade(self.turn_rate_accelerator.get(), self.speed_accelerator.get())
+        self.drive_train.arcade(turn_rate, speed)
 
         # arms code
         if self.joystick2.getTrigger():
@@ -62,6 +72,11 @@ class MyRobot(wpilib.IterativeRobot):
                 self.arms.outtake()
         else:
             self.arms.stop()
+
+
+
+
+
 
 
         # elevator code
