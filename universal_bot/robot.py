@@ -9,7 +9,7 @@ from subsystems.arms import Arms
 from subsystems.elevator import Elevator
 
 from controllers.accelerator import Accelerator
-
+from controllers.elevator_pid_controller import Elevator_Pid_Controller
 
 
 
@@ -26,6 +26,8 @@ class MyRobot(wpilib.IterativeRobot):
 
         self.speed_accelerator = Accelerator(1)
         self.turn_rate_accelerator = Accelerator(1)
+
+        self.elevator_pid = Elevator_Pid_Controller( .3)
 
 
 
@@ -68,6 +70,8 @@ class MyRobot(wpilib.IterativeRobot):
         else:
             self.elevator.set_speed(0)
 
+        if self.joystick2.getRawButton(10):
+            self.ele
 
         # execute subsystems
         self.drive_train.execute()

@@ -19,7 +19,6 @@ class Drive_Train:
 
         self.robot_drive = wpilib.RobotDrive(self.fl_motor, self.bl_motor, self.fr_motor, self.br_motor)
 
-
         self.speed = 0
         self.turn_rate = 0
 
@@ -33,10 +32,10 @@ class Drive_Train:
     def set_speed(self, speed):
         self.speed = speed
 
-    def getAngle(self):
+    def get_angle(self):
         return self.gyro.getAngle()
 
-    def resetGyro(self):
+    def reset_gyro(self):
         self.gyro.reset()
 
     def arcade(self, turn_rate, speed):
