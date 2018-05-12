@@ -7,14 +7,13 @@ class Elevator_Pid_Controller:
     I = 0
     D = 0
 
-    def __init__(self, get_encoder, TICKS_TO_TOP = 1000, HEIGHT = 5, tolerance = .25, feedforward = 0):
+    def __init__(self, get_encoder, TICKS_TO_TOP = 1000, HEIGHT = 5, tolerance = .25):
         self.speed = 0
-        self.feedforward = feedforward
         self.TICKS_TO_TOP = TICKS_TO_TOP
         self.DISTANCE_PER_TICK = HEIGHT / TICKS_TO_TOP
 
         def pid_output(output):
-            self.speed = output + self.feedforward
+            self.speed = output
 
         self.elevator_pid = wpilib.PIDController(self.P, self.I, self.D, get_encoder, pid_output)
         self.elevator_pid.setOutputRange(-1, 1)
@@ -37,6 +36,7 @@ class Elevator_Pid_Controller:
         ticks = self.distance_to_ticks(height)
 
         if self.elevator_pid.getSetpoint() != ticks or not self.is_enabled():
+            print('SETPOINT SET')
             self.enable()
             self.elevator_pid.setSetpoint(ticks)
 

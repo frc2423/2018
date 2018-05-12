@@ -33,6 +33,12 @@ class Elevator:
     def get_encoder(self):
         return -self.elevator_follower.getQuadraturePosition()
 
+    def reset_encoder_max(self):
+        self.set_encoder(-self.TICKS_TO_TOP)
+
+    def reset_encoder_min(self):
+        self.set_encoder(0)
+
     def set_encoder(self, ticks):
         self.elevator_follower.setQuadraturePosition(-ticks, 0)
 
