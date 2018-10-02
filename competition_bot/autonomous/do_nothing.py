@@ -13,4 +13,5 @@ class DoNothing(AutonomousStateMachine):
     @state( first=True)
     def do_nothing(self):
         '''This happens first'''
+        print('sdffdsf')
         self.driveTrain.stop()

@@ -6,7 +6,7 @@ from components.direction_pid import Direction_Pid
 
 class DriveForward(AutonomousStateMachine):
     MODE_NAME = 'DriveForward'
-    DEFAULT = True
+    DEFAULT = False
 
 
     driveTrain = DriveTrain

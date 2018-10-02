@@ -3,9 +3,19 @@ import wpilib.drive
 from robotpy_ext.common_drivers import navx
 import ctre
 from wpilib.timer import Timer
+import math
 
 
 class DriveTrain:
+    # These measurements are in inches
+    WHEEL_RADIUS = 3
+    DRIVE_BASE = 28
+
+    # In degrees
+    THRESHOLD_ANGLE = 5
+
+    # In inches
+    THRESHOLD_DISTANCE = 12
 
     robot_drive : wpilib.RobotDrive
     gyro : navx.AHRS
@@ -60,8 +70,66 @@ class DriveTrain:
 
         return cur_speed
 
+    def drive_to(self, desired_x, desired_y):
 
+        # change from feet to inches
+        desired_x *= 12
+        desired_y *= 12
 
+        desired_angle = math.atan2(desired_x - self.x_pos, desired_y - self.y_pos) * 180 / math.pi
+        distance = math.sqrt((desired_x - self.x_pos) ** 2 + (desired_y - self.y_pos) ** 2)
+
+        angle_distance = desired_angle - self.get_angle_from_encoders()
+        if angle_distance > 180:
+            angle_distance -= 360
+        elif angle_distance < -180:
+            angle_distance += 360
+
+        if angle_distance > DriveTrain.THRESHOLD_ANGLE:
+            self.robot_drive.arcadeDrive(.5, 0)
+        elif angle_distance < -DriveTrain.THRESHOLD_ANGLE:
+            self.robot_drive.arcadeDrive(-.5, 0)
+        elif distance > DriveTrain.THRESHOLD_DISTANCE:
+            self.robot_drive.arcadeDrive(0, -.5)
+        else:
+            self.robot_drive.arcadeDrive(0, 0)
+
+    def calculate_odometry(self):
+
+        # get how much time has passed
+        dt = 0.02
+
+        left_angular_pos = self.get_left_angular_pos()
+        right_angular_pos = self.get_right_angular_pos()
+
+        # calculate angular velocities of the wheels
+        left_angular_vel = (left_angular_pos - self.prev_left_angular_pos) / dt
+        right_angular_vel = (right_angular_pos - self.prev_right_angular_pos) / dt
+
+        # calculate the velocity of the robot
+        vel = (left_angular_vel + right_angular_vel) * DriveTrain.WHEEL_RADIUS / 2
+
+        # calculate angular velocity and use it to calculate the new heading of the robot
+        angular_vel = (left_angular_vel - right_angular_vel) * DriveTrain.WHEEL_RADIUS / DriveTrain.DRIVE_BASE
+        self.angle += angular_vel * dt
+
+        # Update the robot's position
+        self.x_pos += vel * math.sin(self.angle) * dt
+        self.y_pos += vel * math.cos(self.angle) * dt
+
+        # save these values so we can take the difference between them. We want to measure
+        # the difference in order to calculate the angular velocity.
+        self.prev_left_angular_pos = left_angular_pos
+        self.prev_right_angular_pos = right_angular_pos
+
+    def reset_odometry(self):
+        self.fl_motor.setQuadraturePosition(0, 0)
+        self.br_motor.setQuadraturePosition(0, 0)
+        self.x_pos = 0
+        self.y_pos = 0
+        self.angle = 0
+        self.prev_left_angular_pos = self.get_left_angular_pos()
+        self.prev_right_angular_pos = self.get_right_angular_pos()
 
     def turn_pid_off(self):
         self.drive_train_pid.disable()
@@ -106,3 +174,27 @@ class DriveTrain:
         ticks_per_foot = 912.6
         feet = pos / ticks_per_foot
         return feet
+
+    def get_angle_from_encoders(self):
+        '''Returns an angle between -180 and 180'''
+        angle_degrees = (self.angle % (math.pi * 2)) * (180 / math.pi)
+        if angle_degrees < -180:
+            return angle_degrees + 360
+        elif angle_degrees > 180:
+            return angle_degrees - 360
+        else:
+            return angle_degrees
+
+    def get_position(self):
+        return self.x_pos / 12, self.y_pos / 12
+
+    def get_left_angular_pos(self):
+      encoder_value = self.fl_motor.getQuadraturePosition()
+      ticks_per_turn = -1000
+      return 2 * math.pi * encoder_value / ticks_per_turn
+
+
+    def get_right_angular_pos(self):
+        encoder_value = self.br_motor.getQuadraturePosition()
+        ticks_per_turn = 1440
+        return 2 * math.pi * encoder_value / ticks_per_turn

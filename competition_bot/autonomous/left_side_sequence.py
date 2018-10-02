@@ -6,7 +6,7 @@ from components.direction_pid import Direction_Pid
 
 class LeftSideSequence(AutonomousStateMachine):
     MODE_NAME = 'LeftSideSequence'
-    DEFAULT = False
+    DEFAULT = True
 
 
     driveTrain = DriveTrain
@@ -15,20 +15,27 @@ class LeftSideSequence(AutonomousStateMachine):
 
     @state(first = True)
     def stopped_at_position_1(self):
+        print("drive forward")
+        self.driveTrain.reset_odometry()
         self.next_state('driving_to_posiion_2')
+
 
     @state()
     def driving_to_posiion_2(self):
         # state body
+        self.driveTrain.calculate_odometry()
         self.driveTrain.drive_to(0, 4)
-
+        print('position: %1.2f, %1.2f' % self.driveTrain.get_position())
+        print('angle: %1.0f' % self.driveTrain.get_angle_from_encoders())
+        #print("driving forward!", )
+        '''
         # transition
         if self.driveTrain.at_position(0, 4):
             if self.get_switch_side() is 'left':
                 self.next_state('driving_to_position_6')
             else:
                 self.next_state("driving_to_position_3")
-
+        '''
 
     @state()
     def driving_to_posiion_3(self):
