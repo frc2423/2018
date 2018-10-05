@@ -10,7 +10,7 @@ class Direction_Pid:
     I = 0
     D = 0
     driveTrain : DriveTrain
-    gyro: navx.AHRS
+    #gyro: navx.AHRS
 
     def setup(self):
         self.turn_rate = 0
@@ -19,7 +19,8 @@ class Direction_Pid:
             self.turn_rate = turn_rate
 
         def pid_input():
-            return self.gyro.getAngle()
+            return 0
+            #return self.gyro.getAngle()
 
         self.direction_pid = wpilib.PIDController(self.P, self.I, self.D, pid_input, pid_output)
         self.direction_pid.setOutputRange(-1, 1)
@@ -52,5 +53,6 @@ class Direction_Pid:
         return abs(error_degrees) < 1
 
     def get_angle(self):
-        angle = self.gyro.getAngle()
+        angle = 0
+        #angle = self.gyro.getAngle()
         return angle

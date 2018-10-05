@@ -36,6 +36,8 @@ class MyRobot(magicbot.MagicRobot):
 
     def autonomousInit(self):
         self.table.putNumber("ledMode", 0)
+        print('auto init')
+
     def init_drive_train(self):
         #fl, bl, fr, br = (30, 40, 50, 10)  # practice bot
         br, fr, bl, fl = (1, 7, 2, 5)  # on competition robot
@@ -47,7 +49,7 @@ class MyRobot(magicbot.MagicRobot):
         self.fr_motor.setInverted(True)
         self.br_motor.setInverted(True)
 
-        self.gyro = navx.AHRS.create_spi()
+        #self.gyro = navx.AHRS.create_spi()
 
         driveTrain = self.driveTrain
 
@@ -55,7 +57,7 @@ class MyRobot(magicbot.MagicRobot):
             driveTrain.turn_rate = turn_rate
             pass
 
-        self.drive_train_pid = wpilib.PIDController(.1, 0, 0, self.gyro, set_pid_turn_rate)
+        #self.drive_train_pid = wpilib.PIDController(.1, 0, 0, self.gyro, set_pid_turn_rate)
 
         self.robot_drive = wpilib.RobotDrive(self.fl_motor, self.bl_motor, self.fr_motor, self.br_motor)
 

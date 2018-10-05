@@ -12,16 +12,16 @@ class DriveTrain:
     DRIVE_BASE = 28
 
     # In degrees
-    THRESHOLD_ANGLE = 5
+    THRESHOLD_ANGLE = 12
 
     # In inches
     THRESHOLD_DISTANCE = 12
 
     robot_drive : wpilib.RobotDrive
-    gyro : navx.AHRS
+    #gyro : navx.AHRS
     br_motor : ctre.wpi_talonsrx.WPI_TalonSRX
     fl_motor : ctre.wpi_talonsrx.WPI_TalonSRX
-    ACC = 0.5
+    ACC = 0.8
     TURN_ACC = 1.2
 
     def __init__(self):
@@ -86,13 +86,25 @@ class DriveTrain:
             angle_distance += 360
 
         if angle_distance > DriveTrain.THRESHOLD_ANGLE:
-            self.robot_drive.arcadeDrive(.5, 0)
+            print('turn right')
+            self.des_turn_rate = .7
+            self.des_speed = 0
+            return False
         elif angle_distance < -DriveTrain.THRESHOLD_ANGLE:
-            self.robot_drive.arcadeDrive(-.5, 0)
+            print('turn left')
+            self.des_turn_rate = -0.7
+            self.des_speed = 0
+            return False
         elif distance > DriveTrain.THRESHOLD_DISTANCE:
-            self.robot_drive.arcadeDrive(0, -.5)
+            print('forward')
+            #direction = 1 if angle_distance > 0 else -1
+            #self.des_turn_rate = direction * angle_distance / DriveTrain.THRESHOLD_ANGLE * .7
+            self.des_turn_rate = 0#(angle_distance / DriveTrain.THRESHOLD_ANGLE) * .7
+            self.des_speed = -.9
+            return False
         else:
             self.robot_drive.arcadeDrive(0, 0)
+            return True
 
     def calculate_odometry(self):
 
@@ -123,6 +135,7 @@ class DriveTrain:
         self.prev_right_angular_pos = right_angular_pos
 
     def reset_odometry(self):
+        print('odometry reset')
         self.fl_motor.setQuadraturePosition(0, 0)
         self.br_motor.setQuadraturePosition(0, 0)
         self.x_pos = 0
@@ -153,10 +166,12 @@ class DriveTrain:
         self.des_speed = speed
 
     def getAngle(self):
-        return self.gyro.getAngle()
+        return 0
+        #return self.gyro.getAngle()
 
     def resetGyro(self):
-        self.gyro.reset()
+        pass
+        #self.gyro.reset()
 
     def arcade(self, turn_rate, speed):
         self.des_turn_rate = turn_rate
