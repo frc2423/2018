@@ -39,17 +39,17 @@ class Elevator:
             self.stop()
             self.set_encoder(self.TICKS_TO_TOP)
         else:
-            self.speed = -.8
+            self.speed = -.7
 
     def down(self):
         if self.is_min_height():
             self.stop()
             self.set_encoder(0)
         else:
-            self.speed = 0.25
+            self.speed = 0.4
 
     def stop(self):
-        self.speed = -0.3 if not self.is_min_height() else 0
+        self.speed = -0.2 if not self.is_min_height() else 0
 
     def get_height(self):
         pos = self.get_encoder()

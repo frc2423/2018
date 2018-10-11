@@ -22,17 +22,13 @@ class LeftSideSequence(AutonomousStateMachine):
     def stopped_at_position_1(self):
         print("drive forward")
         self.driveTrain.reset_odometry()
-        self.next_state('driving_to_posiion_2')
+        self.next_state('driving_to_position_2')
 
 
     @state()
-    def driving_to_posiion_2(self):
+    def driving_to_position_2(self):
         # state body
-        self.driveTrain.calculate_odometry()
         at_position = self.driveTrain.drive_to(0, 8)
-        print('position: %1.2f, %1.2f' % self.driveTrain.get_position())
-        print('angle: %1.0f' % self.driveTrain.get_angle_from_encoders())
-        #print("driving forward!", )
 
         # transition
         if at_position:
@@ -44,7 +40,6 @@ class LeftSideSequence(AutonomousStateMachine):
 
     @state()
     def driving_to_position_3(self):
-        self.driveTrain.calculate_odometry()
         at_position = self.driveTrain.drive_to(0,16)
 
         if at_position:
@@ -52,7 +47,6 @@ class LeftSideSequence(AutonomousStateMachine):
 
     @state()
     def driving_to_position_4(self):
-        self.driveTrain.calculate_odometry()
         at_position = self.driveTrain.drive_to(14, 16)
 
         if at_position:
@@ -60,15 +54,13 @@ class LeftSideSequence(AutonomousStateMachine):
 
     @state()
     def driving_to_position_5(self):
-        self.driveTrain.calculate_odometry()
         at_position = self.driveTrain.drive_to(14, 12)
 
         if at_position:
-            self.next_state("drop")
+            self.next_state("lift")
 
     @state()
     def driving_to_position_6(self):
-        self.driveTrain.calculate_odometry()
         at_position = self.driveTrain.drive_to(4, 8)
 
         if at_position:
@@ -77,18 +69,21 @@ class LeftSideSequence(AutonomousStateMachine):
 
         pass
 
-    @state()
+    @timed_state(duration=.5, next_state='drop')
+    def lift(self):
+        self.elevator.up()
+
+    @timed_state(duration=2, next_state='do_nothing')
     def drop(self):
-        self.driveTrain.calculate_odometry()
-        self.elevator_pid.set_height(2)
-        if self.elevator_pid.get_height() > 1.8:
-            self.arms.outtake()
+        self.elevator.stop()
+        self.arms.outtake()
 
 
 
     @timed_state(duration=5)
     def do_nothing(self):
         '''This happens second'''
+        self.arms.stop()
         self.direction_pid.disable()
         self.driveTrain.stop()
 

@@ -79,8 +79,6 @@ class MyRobot(magicbot.MagicRobot):
         self.arm_speed = 0
         self.turn_rate = 0
         self.robot_speed = 0
-        self.br_motor.setQuadraturePosition(0, 0)
-        self.fl_motor.setQuadraturePosition(0, 0)
         self.table.putNumber("ledMode", 0)
 
     def teleopPeriodic(self):

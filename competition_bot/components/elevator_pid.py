@@ -53,6 +53,6 @@ class Elevator_Pid:
         return abs(feet) < 3/12
 
     def get_height(self):
-        pos = self.get_encoder()
+        pos = self.elevator.get_encoder()
         feet = pos * self.DISTANCE_PER_TICK
         return feet

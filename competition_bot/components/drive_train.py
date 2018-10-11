@@ -37,11 +37,17 @@ class DriveTrain:
         self.des_turn_rate = 0
         self.acc_toggle = True
         print("on_enable")
+        self.reset_odometry()
 
     def toggle_acc(self):
         self.acc_toggle = not self.acc_toggle
 
     def execute(self):
+        self.calculate_odometry()
+
+        print('position: %1.2f, %1.2f' % self.get_position())
+        print('angle: %1.0f' % self.get_angle_from_encoders())
+
         current_time = Timer.getFPGATimestamp()
         dt = 0 if self.previous_time is None else current_time - self.previous_time
 
@@ -87,12 +93,12 @@ class DriveTrain:
 
         if angle_distance > DriveTrain.THRESHOLD_ANGLE:
             print('turn right')
-            self.des_turn_rate = .7
+            self.des_turn_rate = .5
             self.des_speed = 0
             return False
         elif angle_distance < -DriveTrain.THRESHOLD_ANGLE:
             print('turn left')
-            self.des_turn_rate = -0.7
+            self.des_turn_rate = -0.5
             self.des_speed = 0
             return False
         elif distance > DriveTrain.THRESHOLD_DISTANCE:
@@ -100,10 +106,11 @@ class DriveTrain:
             #direction = 1 if angle_distance > 0 else -1
             #self.des_turn_rate = direction * angle_distance / DriveTrain.THRESHOLD_ANGLE * .7
             self.des_turn_rate = 0#(angle_distance / DriveTrain.THRESHOLD_ANGLE) * .7
-            self.des_speed = -.9
+            self.des_speed = -.5
             return False
         else:
-            self.robot_drive.arcadeDrive(0, 0)
+            self.des_turn_rate = 0
+            self.des_speed = 0
             return True
 
     def calculate_odometry(self):
@@ -118,11 +125,15 @@ class DriveTrain:
         left_angular_vel = (left_angular_pos - self.prev_left_angular_pos) / dt
         right_angular_vel = (right_angular_pos - self.prev_right_angular_pos) / dt
 
+        if left_angular_vel > 1:
+            print('left_angular_vel:', left_angular_vel)
+
         # calculate the velocity of the robot
         vel = (left_angular_vel + right_angular_vel) * DriveTrain.WHEEL_RADIUS / 2
 
         # calculate angular velocity and use it to calculate the new heading of the robot
         angular_vel = (left_angular_vel - right_angular_vel) * DriveTrain.WHEEL_RADIUS / DriveTrain.DRIVE_BASE
+
         self.angle += angular_vel * dt
 
         # Update the robot's position
@@ -135,14 +146,12 @@ class DriveTrain:
         self.prev_right_angular_pos = right_angular_pos
 
     def reset_odometry(self):
-        print('odometry reset')
-        self.fl_motor.setQuadraturePosition(0, 0)
-        self.br_motor.setQuadraturePosition(0, 0)
         self.x_pos = 0
         self.y_pos = 0
         self.angle = 0
         self.prev_left_angular_pos = self.get_left_angular_pos()
         self.prev_right_angular_pos = self.get_right_angular_pos()
+        print('odometry reset')
 
     def turn_pid_off(self):
         self.drive_train_pid.disable()
