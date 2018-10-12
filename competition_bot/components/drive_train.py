@@ -12,7 +12,7 @@ class DriveTrain:
     DRIVE_BASE = 28
 
     # In degrees
-    THRESHOLD_ANGLE = 12
+    THRESHOLD_ANGLE = 25
 
     # In inches
     THRESHOLD_DISTANCE = 12
@@ -103,10 +103,12 @@ class DriveTrain:
             return False
         elif distance > DriveTrain.THRESHOLD_DISTANCE:
             print('forward')
-            #direction = 1 if angle_distance > 0 else -1
-            #self.des_turn_rate = direction * angle_distance / DriveTrain.THRESHOLD_ANGLE * .7
-            self.des_turn_rate = 0#(angle_distance / DriveTrain.THRESHOLD_ANGLE) * .7
-            self.des_speed = -.5
+            direction = 1 if angle_distance > 0 else -1
+            #self.des_turn_rate = direction * abs(angle_distance) / DriveTrain.THRESHOLD_ANGLE * .7
+
+            self.des_turn_rate = direction * math.pow(abs(angle_distance) / DriveTrain.THRESHOLD_ANGLE, .5) * .7
+            #self.des_turn_rate = 0#(angle_distance / DriveTrain.THRESHOLD_ANGLE) * .7
+            self.des_speed = if distance > 2-.8 * math.pow(distance/DriveTrain.THRESHOLD_DISTANCE, 2)
             return False
         else:
             self.des_turn_rate = 0

@@ -40,28 +40,28 @@ class LeftSideSequence(AutonomousStateMachine):
 
     @state()
     def driving_to_position_3(self):
-        at_position = self.driveTrain.drive_to(0,16)
+        at_position = self.driveTrain.drive_to(0,13)
 
         if at_position:
             self.next_state("driving_to_position_4")
 
     @state()
     def driving_to_position_4(self):
-        at_position = self.driveTrain.drive_to(14, 16)
+        at_position = self.driveTrain.drive_to(14, 13)
 
         if at_position:
             self.next_state("driving_to_position_5")
 
     @state()
     def driving_to_position_5(self):
-        at_position = self.driveTrain.drive_to(14, 12)
+        at_position = self.driveTrain.drive_to(14, 11)
 
         if at_position:
             self.next_state("lift")
 
     @state()
     def driving_to_position_6(self):
-        at_position = self.driveTrain.drive_to(4, 8)
+        at_position = self.driveTrain.drive_to(3, 8)
 
         if at_position:
             self.next_state("drop")
